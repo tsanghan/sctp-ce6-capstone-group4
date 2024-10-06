@@ -104,7 +104,10 @@ variable "hosted_zone" {
 }
 
 
-variable "MYIP" {}
+variable "MYIP" {
+  type    = string
+  default = ""
+}
 
 # variable "log_groups" {
 #   type = list(string)

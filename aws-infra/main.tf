@@ -41,15 +41,15 @@ module "alarms" {
 module "make_eks" {
   source = "./modules/make_eks"
 
-  vpc_id                               = module.vpc.vpc_id
-  subnet_ids                           = module.vpc.private_subnets
-  eks_cluster_name                     = var.cluster_name
-  eks_cluster_version                  = var.cluster_version
-  ami_type                             = var.ami_type
-  instance_type                        = var.instance_type
-  ami_release_version                  = var.ami_release_version
-  oidc_fully_qualified_audiences       = var.oidc_fully_qualified_audiences
-  role_policy_arns                     = var.role_policy_arns
+  vpc_id                         = module.vpc.vpc_id
+  subnet_ids                     = module.vpc.private_subnets
+  eks_cluster_name               = var.cluster_name
+  eks_cluster_version            = var.cluster_version
+  ami_type                       = var.ami_type
+  instance_type                  = var.instance_type
+  ami_release_version            = var.ami_release_version
+  oidc_fully_qualified_audiences = var.oidc_fully_qualified_audiences
+  role_policy_arns               = var.role_policy_arns
   # cluster_endpoint_public_access_cidrs = ["${data.http.myip.response_body}/32"]
   cluster_endpoint_public_access_cidrs = ["${var.MYIP}/32"]
   tags                                 = var.tags
