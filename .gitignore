@@ -39,3 +39,4 @@ override.tf.json
 terraform.rc
 
 .envrc
+*.hcl
