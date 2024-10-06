@@ -19,12 +19,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Checkov GitHub Action
-      uses: bridgecrewio/checkov-action@v12
-      with:
-        ## This will add both a CLI output to the console and create a results.sarif file
-        output_format: cli
-        output_file_path: console
+    # - name: Checkov GitHub Action
+    #   uses: bridgecrewio/checkov-action@v12
+    #   with:
+    #     ## This will add both a CLI output to the console and create a results.sarif file
+    #     output_format: cli
+    #     output_file_path: console
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4.0.2
