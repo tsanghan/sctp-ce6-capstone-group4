@@ -157,6 +157,8 @@ jobs:
         tofu plan
 
     - name: Tofu Apply
+      env:
+        TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
         cd aws-infra
         tofu apply -auto-approve

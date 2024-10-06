@@ -11,6 +11,6 @@ resource "local_file" "kubeconfig" {
   file_permission = "0600"
 
   provisioner "local-exec" {
-    command = "touch ~/.kube/config; rm ~/.kube/config ; cp kubeconfig_${var.cluster_name} ~/.kube/config"
+    command = "test -d ~/.kube || mkdir ~/.kube ; touch ~/.kube/config; rm ~/.kube/config ; cp kubeconfig_${var.cluster_name} ~/.kube/config"
   }
 }
