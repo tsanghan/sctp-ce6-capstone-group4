@@ -1,0 +1,694 @@
+{
+    "widgets": [
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 0,
+            "width": 3,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Nodes status",
+                "legend": {
+                    "position": "right"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ { "id": "ready_nodes_avgm0", "label": "Ready Nodes (avg)", "color": "#2ca02c", "expression": "IF(PERIOD(ready_nodesm0)>=60, ready_nodesm0/(PERIOD(ready_nodesm0)/60), ready_nodesm0)", "accountId": "${account_id}" } ],
+                    [ { "id": "m0m0", "label": "Not Ready Nodes (avg)", "color": "#ff7f0e", "expression": "IF(total_nodes_avgm0-ready_nodes_avgm0 >=0, total_nodes_avgm0-ready_nodes_avgm0, 0)", "accountId": "${account_id}" } ],
+                    [ { "id": "total_nodes_avgm0", "color": "#ff7f0e", "expression": "IF(PERIOD(total_nodesm0)>=60, total_nodesm0/(PERIOD(total_nodesm0)/60), total_nodesm0)", "visible": false, "label": "${account_id},tsanghan-ce6", "accountId": "${account_id}" } ],
+                    [ "ContainerInsights", "node_status_condition_ready", "ClusterName", "tsanghan-ce6", { "id": "ready_nodesm0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "cluster_node_count", ".", ".", { "id": "total_nodesm0", "label": "Sum", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "view": "singleValue"
+            }
+        },
+        {
+            "type": "metric",
+            "x": 3,
+            "y": 0,
+            "width": 3,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Container restarts",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "pod_number_of_container_restarts", "ClusterName", "tsanghan-ce6", { "id": "expr1m0", "label": "Sum", "color": "#1f77b4", "stat": "Sum", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "view": "singleValue",
+                "sparkline": true
+            }
+        },
+        {
+            "type": "metric",
+            "x": 6,
+            "y": 0,
+            "width": 3,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Node CPU utilization",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "node_cpu_utilization", "ClusterName", "tsanghan-ce6", { "id": "expr1m0", "label": "Maximum", "color": "#1f77b4", "stat": "Maximum", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "view": "singleValue",
+                "sparkline": true
+            }
+        },
+        {
+            "type": "metric",
+            "x": 9,
+            "y": 0,
+            "width": 3,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Node memory utilization",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "node_memory_utilization", "ClusterName", "tsanghan-ce6", { "id": "expr1m0", "label": "Maximum", "color": "#1f77b4", "stat": "Maximum", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "view": "singleValue",
+                "sparkline": true
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 0,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Pod CPU utilization over pod limit",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "pod_cpu_utilization_over_pod_limit", "ClusterName", "tsanghan-ce6", { "id": "mm0m0", "label": "[avg: $${AVG}] pod_cpu_utilization_over_pod_limit", "stat": "Average", "accountId": "${account_id}" } ],
+                    [ "...", { "id": "mm1m0", "label": "[max: $${MAX}] pod_cpu_utilization_over_pod_limit", "stat": "Maximum", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "showUnits": false,
+                        "label": "Percent"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 18,
+            "y": 0,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Pod memory utilization over pod limit",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "pod_memory_utilization_over_pod_limit", "ClusterName", "tsanghan-ce6", { "id": "mm0m0", "label": "[avg: $${AVG}] pod_memory_utilization_over_pod_limit", "stat": "Average", "accountId": "${account_id}" } ],
+                    [ "...", { "id": "mm1m0", "label": "[max: $${MAX}] pod_memory_utilization_over_pod_limit", "stat": "Maximum", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "showUnits": false,
+                        "label": "Percent"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Pod CPU utilization over node limit",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "pod_cpu_utilization", "ClusterName", "tsanghan-ce6", { "stat": "Average", "label": "[avg: $${AVG}] pod_cpu_utilization", "accountId": "${account_id}" } ],
+                    [ "...", { "stat": "Maximum", "label": "[max: $${MAX}] pod_cpu_utilization", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "showUnits": false,
+                        "label": "Percent"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 6,
+            "y": 6,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Pod memory utilization over node limit",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "pod_memory_utilization", "ClusterName", "tsanghan-ce6", { "stat": "Average", "label": "[avg: $${AVG}] pod_memory_utilization", "accountId": "${account_id}" } ],
+                    [ "...", { "stat": "Maximum", "label": "[max: $${MAX}] pod_memory_utilization", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "showUnits": false,
+                        "label": "Percent"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 6,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Pod network received bytes",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "pod_network_rx_bytes", "ClusterName", "tsanghan-ce6", { "id": "mm0m0", "label": "[avg: $${AVG}] pod_network_rx_bytes", "stat": "Average", "accountId": "${account_id}" } ],
+                    [ "...", { "id": "mm1m0", "label": "[max: $${MAX}] pod_network_rx_bytes", "stat": "Maximum", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "showUnits": false,
+                        "label": "Bytes/Second"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 18,
+            "y": 6,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Pod network transmitted bytes",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "pod_network_tx_bytes", "ClusterName", "tsanghan-ce6", { "id": "mm0m0", "label": "[avg: $${AVG}] pod_network_tx_bytes", "stat": "Average", "accountId": "${account_id}" } ],
+                    [ "...", { "id": "mm1m0", "label": "[max: $${MAX}] pod_network_tx_bytes", "stat": "Maximum", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "showUnits": false,
+                        "label": "Bytes/Second"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 12,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Container restarts",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "pod_number_of_container_restarts", "ClusterName", "tsanghan-ce6", { "stat": "Sum", "label": "[max: $${MAX}] pod_number_of_container_restarts", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "showUnits": false,
+                        "label": "Count"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 6,
+            "y": 12,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Pod status",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ { "expression": "IF(PERIOD(m1m0)>=60, m1m0/(PERIOD(m1m0)/60), m1m0)", "label": "pod_status_initialized", "accountId": "${account_id}" } ],
+                    [ { "expression": "IF(PERIOD(m2m0)>=60, m2m0/(PERIOD(m2m0)/60), m2m0)", "label": "pod_status_pending", "accountId": "${account_id}" } ],
+                    [ { "expression": "IF(PERIOD(m3m0)>=60, m3m0/(PERIOD(m3m0)/60), m3m0)", "label": "pod_status_succeeded", "accountId": "${account_id}" } ],
+                    [ { "expression": "IF(PERIOD(m4m0)>=60, m4m0/(PERIOD(m4m0)/60), m4m0)", "label": "pod_status_failed", "accountId": "${account_id}" } ],
+                    [ { "expression": "IF(PERIOD(m5m0)>=60, m5m0/(PERIOD(m5m0)/60), m5m0)", "label": "pod_status_running", "accountId": "${account_id}" } ],
+                    [ { "expression": "IF(PERIOD(m6m0)>=60, m6m0/(PERIOD(m6m0)/60), m6m0)", "label": "pod_status_ready", "accountId": "${account_id}" } ],
+                    [ { "expression": "IF(PERIOD(m7m0)>=60, m7m0/(PERIOD(m7m0)/60), m7m0)", "label": "pod_status_scheduled", "accountId": "${account_id}" } ],
+                    [ { "expression": "IF(PERIOD(m8m0)>=60, m8m0/(PERIOD(m8m0)/60), m8m0)", "label": "pod_status_unknown", "accountId": "${account_id}" } ],
+                    [ "ContainerInsights", "pod_status_initialized", "ClusterName", "tsanghan-ce6", { "id": "m1m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "pod_status_pending", ".", ".", { "id": "m2m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "pod_status_succeeded", ".", ".", { "id": "m3m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "pod_status_failed", ".", ".", { "id": "m4m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "pod_status_running", ".", ".", { "id": "m5m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "pod_status_ready", ".", ".", { "id": "m6m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "pod_status_scheduled", ".", ".", { "id": "m7m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "pod_status_unknown", ".", ".", { "id": "m8m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Count",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 12,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Node CPU utilization",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "node_cpu_utilization", "ClusterName", "tsanghan-ce6", { "stat": "Average", "label": "[avg: $${AVG}] node_cpu_utilization", "accountId": "${account_id}" } ],
+                    [ "...", { "stat": "Maximum", "label": "[max: $${MAX}] node_cpu_utilization", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "showUnits": false,
+                        "label": "Percent"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 18,
+            "y": 12,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Node memory utilization",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "node_memory_utilization", "ClusterName", "tsanghan-ce6", { "stat": "Average", "label": "[avg: $${AVG}] node_memory_utilization", "accountId": "${account_id}" } ],
+                    [ "...", { "stat": "Maximum", "label": "[max: $${MAX}] node_memory_utilization", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "min": 0,
+                        "showUnits": false,
+                        "label": "Percent"
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 18,
+            "width": 4,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Filesystem utilization",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "node_filesystem_utilization", "ClusterName", "tsanghan-ce6", { "stat": "Average", "label": "[avg: $${AVG}] node_filesystem_utilization", "accountId": "${account_id}" } ],
+                    [ "...", { "stat": "Maximum", "label": "[max: $${MAX}] node_filesystem_utilization", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60
+            }
+        },
+        {
+            "type": "metric",
+            "x": 4,
+            "y": 18,
+            "width": 4,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Filesystem inodes utilization",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ { "id": "expr1m0", "label": "[avg: $${AVG}] node_filesystem_inode_utilization", "expression": "m1m0 / (m2m0 + m1m0) * 100", "accountId": "${account_id}" } ],
+                    [ "ContainerInsights", "node_filesystem_inodes_free", "ClusterName", "tsanghan-ce6", { "id": "m1m0", "stat": "Average", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "node_filesystem_inodes", ".", ".", { "id": "m2m0", "stat": "Maximum", "visible": false, "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Percent",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 8,
+            "y": 18,
+            "width": 4,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Node network total bytes",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "node_network_total_bytes", "ClusterName", "tsanghan-ce6", { "stat": "Average", "label": "[avg: $${AVG}] node_network_total_bytes", "accountId": "${account_id}" } ],
+                    [ "...", { "stat": "Maximum", "label": "[max: $${MAX}] node_network_total_bytes", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 18,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Number of ready nodes",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "cluster_node_count", "ClusterName", "tsanghan-ce6", { "stat": "Average", "label": "[avg: $${AVG}] cluster_node_count", "accountId": "${account_id}" } ],
+                    [ { "expression": "IF(PERIOD(m1m0)>=60, m1m0/(PERIOD(m1m0)/60), m1m0)", "label": "[max: $${MAX}] node_status_condition_ready", "accountId": "${account_id}" } ],
+                    [ "ContainerInsights", "node_status_condition_ready", "ClusterName", "tsanghan-ce6", { "id": "m1m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Count",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 18,
+            "y": 18,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Nodes error condition",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ { "expression": "IF(PERIOD(m1m0)>=60, m1m0/(PERIOD(m1m0)/60), m1m0)", "label": "[max: $${MAX}] node_status_condition_out_of_disk", "accountId": "${account_id}" } ],
+                    [ { "expression": "IF(PERIOD(m2m0)>=60, m2m0/(PERIOD(m2m0)/60), m2m0)", "label": "[max: $${MAX}] node_status_condition_memory_pressure", "accountId": "${account_id}" } ],
+                    [ { "expression": "IF(PERIOD(m3m0)>=60, m3m0/(PERIOD(m3m0)/60), m3m0)", "label": "[max: $${MAX}] node_status_condition_pid_pressure", "accountId": "${account_id}" } ],
+                    [ "ContainerInsights", "cluster_failed_node_count", "ClusterName", "tsanghan-ce6", { "stat": "Maximum", "label": "[max: $${MAX}] cluster_failed_node_count", "accountId": "${account_id}" } ],
+                    [ ".", "node_status_condition_out_of_disk", ".", ".", { "id": "m1m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "node_status_condition_memory_pressure", ".", ".", { "id": "m2m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "node_status_condition_pid_pressure", ".", ".", { "id": "m3m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Count",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 24,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Running pods per node",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "node_number_of_running_pods", "ClusterName", "tsanghan-ce6", { "stat": "Average", "label": "[avg: $${AVG}] node_number_of_running_pods", "accountId": "${account_id}" } ],
+                    [ "...", { "stat": "Maximum", "label": "[max: $${MAX}] node_number_of_running_pods", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Count",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 6,
+            "y": 24,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "Allocatable pods on nodes utilization",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ { "id": "expr1m0", "label": "[avg: $${AVG}] node_allocatable_pods_utilization", "expression": "100*(m1m0/m2m0)", "accountId": "${account_id}" } ],
+                    [ "ContainerInsights", "node_number_of_running_pods", "ClusterName", "tsanghan-ce6", { "id": "m1m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ],
+                    [ ".", "node_status_allocatable_pods", ".", ".", { "id": "m2m0", "stat": "Sum", "visible": false, "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Count",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 12,
+            "y": 24,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "API server requests",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "apiserver_request_total", "ClusterName", "tsanghan-ce6", { "id": "mm1m0", "stat": "Sum", "yAxis": "left", "accountId": "${account_id}" } ],
+                    [ ".", "apiserver_request_duration_seconds", ".", ".", { "id": "mm2m0", "stat": "Average", "yAxis": "right", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Count",
+                        "showUnits": false
+                    },
+                    "right": {
+                        "label": "Seconds",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 18,
+            "y": 24,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "REST client requests",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "rest_client_requests_total", "ClusterName", "tsanghan-ce6", { "id": "mm1m0", "label": "rest_client_requests_total (alpha)", "stat": "Sum", "yAxis": "left", "accountId": "${account_id}" } ],
+                    [ ".", "rest_client_request_duration_seconds", ".", ".", { "id": "mm2m0", "label": "rest_client_request_duration_seconds (alpha)", "stat": "Average", "yAxis": "right", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Count",
+                        "showUnits": false
+                    },
+                    "right": {
+                        "label": "Seconds",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 0,
+            "y": 30,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "API server admission controller duration / ETCD request duration",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "apiserver_admission_controller_admission_duration_seconds", "ClusterName", "tsanghan-ce6", { "id": "mm1m0", "stat": "Average", "yAxis": "left", "accountId": "${account_id}" } ],
+                    [ ".", "etcd_request_duration_seconds", ".", ".", { "id": "mm2m0", "label": "etcd_request_duration_seconds (alpha)", "stat": "Average", "yAxis": "right", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Seconds",
+                        "showUnits": false
+                    },
+                    "right": {
+                        "label": "Seconds",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "type": "metric",
+            "x": 6,
+            "y": 30,
+            "width": 6,
+            "height": 6,
+            "properties": {
+                "region": "${region}",
+                "title": "API server storage objects",
+                "legend": {
+                    "position": "bottom"
+                },
+                "timezone": "LOCAL",
+                "metrics": [
+                    [ "ContainerInsights", "apiserver_storage_objects", "ClusterName", "tsanghan-ce6", { "id": "mm1m0", "stat": "Maximum", "yAxis": "left", "accountId": "${account_id}" } ],
+                    [ { "expression": "SEARCH('{ContainerInsights,ClusterName} ClusterName=\"tsanghan-ce6\" (\"apiserver_storage_db_total_size_in_bytes\" OR \"etcd_db_total_size_in_bytes\" OR \"apiserver_storage_size_bytes\")', 'Maximum', 60)", "label": "$${LABEL}", "id": "mm2m0", "stat": "Maximum", "yAxis": "right", "accountId": "${account_id}" } ]
+                ],
+                "liveData": false,
+                "period": 60,
+                "yAxis": {
+                    "left": {
+                        "label": "Count",
+                        "showUnits": false
+                    },
+                    "right": {
+                        "label": "Bytes",
+                        "showUnits": false
+                    }
+                }
+            }
+        }
+    ]
+}

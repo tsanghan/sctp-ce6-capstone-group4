@@ -1,0 +1,43 @@
+{
+    "widgets": [
+        {
+            "height": 6,
+            "width": 12,
+            "y": 12,
+            "x": 12,
+            "type": "log",
+            "properties": {
+                "query": "SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields @message | filter @message like /frontend/ | filter @message like /http.resp.status/ | parse @message \"status\\\":*,\" as code | stats count(*) by code",
+                "region": "${region}",
+                "title": "Frontend HTTP Status Code (Application Log)",
+                "view": "pie"
+            }
+        },
+        {
+            "height": 6,
+            "width": 12,
+            "y": 12,
+            "x": 0,
+            "type": "log",
+            "properties": {
+                "query": "SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields log_processed.message | filter log_processed.message like /Transaction processed/ | parse log_processed.message /Amount: (?<currency>[A-Z]{3}?)/ | stats count(*) by currency",
+                "region": "${region}",
+                "title": "Transaction processed by Currency (Application Log)",
+                "view": "bar"
+            }
+        },
+        {
+            "height": 6,
+            "width": 12,
+            "y": 18,
+            "x": 0,
+            "type": "log",
+            "properties": {
+                "query": "SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields log_processed.message | filter log_processed.message like /Transaction processed/ | parse log_processed.message /Amount: (?<currency>[A-Z]{3}?)(?<amount>[0-9.]{10,13}?)/ | stats sum(amount) by currency",
+                "region": "${region}",
+                "title": "Transaction Amount by Currency (Application Log)",
+                "view": "bar"
+            }
+        }
+    ]
+}

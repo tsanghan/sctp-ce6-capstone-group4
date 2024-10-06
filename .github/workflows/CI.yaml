@@ -1,0 +1,162 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  #checkov:skip=CKV_GHA_7: "The build output cannot be affected by user parameters other than the build entry point and the top-level source location. GitHub Actions workflow_dispatch inputs MUST be empty. "
+  # push:
+  #   branches: ["main"]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  Intergration:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Checkov GitHub Action
+      uses: bridgecrewio/checkov-action@v12
+      with:
+        ## This will add both a CLI output to the console and create a results.sarif file
+        output_format: cli
+        output_file_path: console
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4.0.2
+      with:
+        aws-region: ${{ vars.AWS_REGION }}
+        role-to-assume: "arn:aws:iam::255945442255:role/GitHubAction-AssumeRoleWithAction-Capstone"
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+
+    - name: Sts GetCallerIdentity
+      run: |
+          aws sts get-caller-identity
+
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v4
+      with:
+        tflint_version: v0.52.0
+
+    - name: Show version
+      run: |
+        cd aws-infra
+        tflint --version
+
+    - name: Init TFLint
+      run: |
+        cd aws-infra
+        tflint --init
+
+    - name: Run TFLint
+      run: |
+        cd aws-infra
+        tflint -f compact
+
+    - name: Setup Tofu
+      uses: opentofu/setup-opentofu@v1
+      with:
+        tofu_version: "1.7.3"
+        tofu_wrapper: false
+
+    - name: Tofu Init
+      run: |
+        cd aws-infra
+        tofu init
+
+    - name: Tofu Fmt
+      run: |
+        cd aws-infra
+        tofu fmt --recursive -check
+
+    - name: Tofu Validate
+      run: |
+        cd aws-infra
+        tofu validate
+
+    - name: Todu Plan
+      run: |
+        cd aws-infra
+        tofu plan
+
+  Deployment:
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Checkov GitHub Action
+      uses: bridgecrewio/checkov-action@v12
+      with:
+        ## This will add both a CLI output to the console and create a results.sarif file
+        output_format: cli
+        output_file_path: console
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4.0.2
+      with:
+        aws-region: ${{ vars.AWS_REGION }}
+        role-to-assume: "arn:aws:iam::255945442255:role/GitHubAction-AssumeRoleWithAction-Capstone"
+        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+
+    - name: Sts GetCallerIdentity
+      run: |
+          aws sts get-caller-identity
+
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v4
+      with:
+        tflint_version: v0.52.0
+
+    - name: Show version
+      run: |
+        cd aws-infra
+        tflint --version
+
+    - name: Init TFLint
+      run: |
+        cd aws-infra
+        tflint --init
+
+    - name: Run TFLint
+      run: |
+        cd aws-infra
+        tflint -f compact
+
+    - name: Setup Tofu
+      uses: opentofu/setup-opentofu@v1
+      with:
+        tofu_version: "1.7.3"
+        tofu_wrapper: false
+
+    - name: Tofu Init
+      run: |
+        cd aws-infra
+        tofu init
+
+    - name: Tofu Fmt
+      run: |
+        cd aws-infra
+        tofu fmt --recursive -check
+
+    - name: Tofu Validate
+      run: |
+        cd aws-infra
+        tofu validate
+
+    - name: Tofu Plan
+      run: |
+        cd aws-infra
+        tofu plan
+
+    - name: Tofu Apply
+      run: |
+        cd aws-infra
+        tofu apply -auto-approve
+

@@ -1,0 +1,132 @@
+{
+    "widgets": [
+        {
+            "height": 6,
+            "width": 12,
+            "y": 0,
+            "x": 12,
+            "type": "metric",
+            "properties": {
+                "legend": {
+                    "position": "bottom"
+                },
+                "liveData": false,
+                "metrics": [
+                    [ "ContainerInsights", "apiserver_request_total", "ClusterName", "${cluster_name}", { "accountId": "${account_id}", "id": "mm1m0", "stat": "Sum", "yAxis": "left" } ],
+                    [ ".", "apiserver_request_duration_seconds", ".", ".", { "accountId": "${account_id}", "id": "mm2m0", "stat": "Average", "yAxis": "right" } ]
+                ],
+                "period": 60,
+                "region": "ap-southeast-1",
+                "timezone": "LOCAL",
+                "title": "API server requests",
+                "yAxis": {
+                    "left": {
+                        "label": "Count",
+                        "showUnits": false
+                    },
+                    "right": {
+                        "label": "Seconds",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "height": 6,
+            "width": 12,
+            "y": 6,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "legend": {
+                    "position": "bottom"
+                },
+                "liveData": false,
+                "metrics": [
+                    [ "ContainerInsights", "apiserver_admission_controller_admission_duration_seconds", "ClusterName", "${cluster_name}", { "accountId": "${account_id}", "id": "mm1m0", "stat": "Average", "yAxis": "left" } ],
+                    [ ".", "etcd_request_duration_seconds", ".", ".", { "accountId": "${account_id}", "id": "mm2m0", "label": "etcd_request_duration_seconds (alpha)", "stat": "Average", "yAxis": "right" } ]
+                ],
+                "period": 60,
+                "region": "ap-southeast-1",
+                "timezone": "LOCAL",
+                "title": "API server admission controller duration / ETCD request duration",
+                "yAxis": {
+                    "left": {
+                        "label": "Seconds",
+                        "showUnits": false
+                    },
+                    "right": {
+                        "label": "Seconds",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "height": 6,
+            "width": 12,
+            "y": 0,
+            "x": 0,
+            "type": "metric",
+            "properties": {
+                "legend": {
+                    "position": "bottom"
+                },
+                "liveData": false,
+                "metrics": [
+                    [ "ContainerInsights", "apiserver_storage_objects", "ClusterName", "${cluster_name}", { "accountId": "${account_id}", "id": "mm1m0", "region": "ap-southeast-1", "stat": "Maximum", "yAxis": "left" } ],
+                    [ "ContainerInsights", "apiserver_storage_size_bytes", "ClusterName", "${cluster_name}", { "accountId": "${account_id}", "id": "mm2m0", "region": "ap-southeast-1", "stat": "Maximum", "yAxis": "right" } ]
+                ],
+                "period": 60,
+                "region": "ap-southeast-1",
+                "stacked": false,
+                "timezone": "LOCAL",
+                "title": "API server storage objects",
+                "view": "timeSeries",
+                "yAxis": {
+                    "left": {
+                        "label": "Count",
+                        "showUnits": false
+                    },
+                    "right": {
+                        "label": "Bytes",
+                        "showUnits": false
+                    }
+                }
+            }
+        },
+        {
+            "height": 6,
+            "width": 12,
+            "y": 6,
+            "x": 12,
+            "type": "metric",
+            "properties": {
+                "legend": {
+                    "position": "bottom"
+                },
+                "liveData": false,
+                "metrics": [
+                    [ "ContainerInsights", "rest_client_requests_total", "ClusterName", "${cluster_name}", { "accountId": "${account_id}", "id": "mm1m0", "label": "rest_client_requests_total (alpha)", "stat": "Sum", "yAxis": "left" } ],
+                    [ "ContainerInsights", "rest_client_request_duration_seconds", "ClusterName", "${cluster_name}", { "accountId": "${account_id}", "id": "mm2m0", "label": "rest_client_request_duration_seconds (alpha)", "stat": "Average", "yAxis": "right" } ]
+                ],
+                "period": 60,
+                "region": "ap-southeast-1",
+                "stacked": false,
+                "timezone": "LOCAL",
+                "title": "REST client requests",
+                "view": "timeSeries",
+                "yAxis": {
+                    "left": {
+                        "label": "Count",
+                        "showUnits": false
+                    },
+                    "right": {
+                        "label": "Seconds",
+                        "showUnits": false
+                    }
+                }
+            }
+        }
+    ]
+}
