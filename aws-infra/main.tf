@@ -1,20 +1,20 @@
-locals {
-  create_role = true
-}
+# locals {
+#   create_role = true
+# }
 
 data "aws_caller_identity" "current" {}
 
-data "aws_partition" "current" {
-  count = local.create_role ? 1 : 0
-}
+# data "aws_partition" "current" {
+#   count = local.create_role ? 1 : 0
+# }
 
 data "aws_route53_zone" "selected" {
   name = var.hosted_zone
 }
 
-data "aws_eks_cluster_auth" "main" {
-  name = var.cluster_name
-}
+# data "aws_eks_cluster_auth" "main" {
+#   name = var.cluster_name
+# }
 
 data "http" "myip" {
   url = "http://api.ipify.org"

@@ -103,41 +103,41 @@ variable "hosted_zone" {
   default = "sctp-sandbox.com."
 }
 
-variable "log_groups" {
-  type = list(string)
-  default = [
-    "/aws/containerinsights/tsanghan-ce6/application",
-    "/aws/containerinsights/tsanghan-ce6/dataplane",
-    "/aws/containerinsights/tsanghan-ce6/host",
-    "/aws/containerinsights/tsanghan-ce6/performance",
-  ]
-}
+# variable "log_groups" {
+#   type = list(string)
+#   default = [
+#     "/aws/containerinsights/tsanghan-ce6/application",
+#     "/aws/containerinsights/tsanghan-ce6/dataplane",
+#     "/aws/containerinsights/tsanghan-ce6/host",
+#     "/aws/containerinsights/tsanghan-ce6/performance",
+#   ]
+# }
 
 # variable "staging" {
 #   type    = bool
 #   default = true
 # }
 
-variable "cert_manager" {
-  description = "cert-manager add-on configuration values"
-  type        = any
-  default     = {}
-}
+# variable "cert_manager" {
+#   description = "cert-manager add-on configuration values"
+#   type        = any
+#   default     = {}
+# }
 
-variable "cert_manager_route53_hosted_zone_arns" {
-  description = "List of Route53 Hosted Zone ARNs that are used by cert-manager to create DNS records"
-  type        = list(string)
-  default     = ["arn:aws:route53:::hostedzone/*"]
-}
+# variable "cert_manager_route53_hosted_zone_arns" {
+#   description = "List of Route53 Hosted Zone ARNs that are used by cert-manager to create DNS records"
+#   type        = list(string)
+#   default     = ["arn:aws:route53:::hostedzone/*"]
+# }
 
-variable "external_dns_route53_zone_arns" {
-  description = "List of Route53 zones ARNs which external-dns will have access to create/manage records (if using Route53)"
-  type        = list(string)
-  default     = []
-}
+# variable "external_dns_route53_zone_arns" {
+#   description = "List of Route53 zones ARNs which external-dns will have access to create/manage records (if using Route53)"
+#   type        = list(string)
+#   default     = []
+# }
 
-variable "external_dns" {
-  description = "external-dns add-on configuration values"
-  type        = any
-  default     = {}
-}
+# variable "external_dns" {
+#   description = "external-dns add-on configuration values"
+#   type        = any
+#   default     = {}
+# }
