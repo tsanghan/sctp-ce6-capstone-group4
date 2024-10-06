@@ -103,6 +103,12 @@ variable "hosted_zone" {
   default = "sctp-sandbox.com."
 }
 
+
+variable "MYIP" {
+  type    = string
+  default = ""
+}
+
 # variable "log_groups" {
 #   type = list(string)
 #   default = [
