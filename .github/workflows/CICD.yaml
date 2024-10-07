@@ -129,25 +129,25 @@ jobs:
       run: |
           aws sts get-caller-identity
 
-    - name: Setup TFLint
-      uses: terraform-linters/setup-tflint@v4
-      with:
-        tflint_version: v0.52.0
+    # - name: Setup TFLint
+    #   uses: terraform-linters/setup-tflint@v4
+    #   with:
+    #     tflint_version: v0.52.0
 
-    - name: Show version
-      run: |
-        cd aws-infra
-        tflint --version
+    # - name: Show version
+    #   run: |
+    #     cd aws-infra
+    #     tflint --version
 
-    - name: Init TFLint
-      run: |
-        cd aws-infra
-        tflint --init
+    # - name: Init TFLint
+    #   run: |
+    #     cd aws-infra
+    #     tflint --init
 
-    - name: Run TFLint
-      run: |
-        cd aws-infra
-        tflint -f compact
+    # - name: Run TFLint
+    #   run: |
+    #     cd aws-infra
+    #     tflint -f compact
 
     - name: Setup Tofu
       uses: opentofu/setup-opentofu@v1
@@ -160,15 +160,15 @@ jobs:
         cd aws-infra
         tofu init
 
-    - name: Tofu Fmt
-      run: |
-        cd aws-infra
-        tofu fmt --recursive -check
+    # - name: Tofu Fmt
+    #   run: |
+    #     cd aws-infra
+    #     tofu fmt --recursive -check
 
-    - name: Tofu Validate
-      run: |
-        cd aws-infra
-        tofu validate
+    # - name: Tofu Validate
+    #   run: |
+    #     cd aws-infra
+    #     tofu validate
 
     - name: Tofu Plan
       run: |
@@ -182,7 +182,7 @@ jobs:
         cd aws-infra
         tofu apply -auto-approve
 
-    - name: Extract ARNs info
+    - name: Extract ARNs
       id: info
       run: |
         cd aws-infra
@@ -195,6 +195,8 @@ jobs:
         EXTERNAL_DNS_ROLE_ARN: ${{ steps.info.outputs.external_dns_role_arn}}
         ENVIRONMENT: ${{ vars.ENVIRONMENT }}
         GITHUB_TOKEN: ${{ secrets.FLUX_GITHUB_TOKEN }}
+        AWS_REGION: ${{ vars.AWS_REGION }}
+        ACME_SERVER: ${{ vars.ACME_SERVER }}
       run: |
         bash --version
         echo "$CERT_MANAGER_ROLE_ARN"

@@ -34,7 +34,7 @@ while [ "$(kubectl get crd certificates.cert-manager.io 2> /dev/null)" = "" ]; d
   sleep 5
 done
 kubectl wait --timeout=10m -n cert-manager deployment/cert-manager-webhook --for=condition=Available
-envsubst < cert-manager/cluster-issuer-"$ENVIRONMENT".tpl | kubectl apply -f -
+envsubst < cert-manager/cluster-issuer.tpl | kubectl apply -f -
 
 #kubectl create ns envoy-gateway-system --dry-run=client -oyaml | egrep -v "{}|null" | k apply -f -
 kubectl apply -f envoygateway/namespace.yaml
