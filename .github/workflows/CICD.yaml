@@ -84,6 +84,11 @@ jobs:
         cd aws-infra
         tofu plan
 
+    - name: Run ShellCheck
+      uses: ludeeus/action-shellcheck@master
+      with:
+        scandir: './eks-infra'
+
   Deployment:
     runs-on: ubuntu-latest
     needs: Intergration

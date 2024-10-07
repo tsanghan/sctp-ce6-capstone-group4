@@ -8,7 +8,7 @@ metadata:
   name: letsencrypt-${ENVIRONMENT}
 spec:
   acme:
-    server: ${ACME_CERVER}
+    server: ${ACME_SERVER}
     email: tsanghan@gmail.com
     privateKeySecretRef:
       name: letsencrypt-staging
