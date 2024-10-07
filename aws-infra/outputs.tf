@@ -14,7 +14,7 @@ output "oidc_provider_arn" {
   value = module.make_eks.oidc_provider_arn
 }
 
-output "eks-kubeconfig" {
+output "eks_kubeconfig" {
   value     = module.make_kubeconfig.kubeconfig
   sensitive = true
 }
