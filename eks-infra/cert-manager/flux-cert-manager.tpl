@@ -46,4 +46,4 @@ spec:
     serviceAccount:
       name: "cert-manager"
       annotations:
-        "eks.amazonaws.com/role-arn": ${cert_manager_role_arn}
+        "eks.amazonaws.com/role-arn": ${CERT_MANAGER_ROLE_ARN}
