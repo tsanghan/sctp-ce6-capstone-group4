@@ -1,0 +1,22 @@
+---
+# certificate.yaml
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: demoapp
+  namespace: demoapp-gw
+spec:
+  secretName: demoapp-tls
+  revisionHistoryLimit: 1
+  privateKey:
+    rotationPolicy: Always
+  commonName: "cymbal.sctp-sandbox.com"
+  dnsNames:
+    - "cymbal.sctp-sandbox.com"
+  usages:
+    - digital signature
+    - key encipherment
+    - server auth
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
