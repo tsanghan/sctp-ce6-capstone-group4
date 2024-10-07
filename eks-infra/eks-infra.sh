@@ -4,6 +4,7 @@ kubectl apply -k gateway-api
 
 kubectl -n kube-system patch daemonset aws-node --type='strategic' -p='{"spec":{"template":{"spec":{"nodeSelector":{"io.cilium/aws-node-enabled":"true"}}}}}'
 
+helm repo add cilium https://helm.cilium.io/
 helm install cilium cilium/cilium --version 1.16.2 \
   --namespace kube-system \
   --set eni.enabled=true \
