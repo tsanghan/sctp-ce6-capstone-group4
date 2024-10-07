@@ -199,6 +199,7 @@ jobs:
         CERT_MANAGER_ROLE_ARN: ${{ steps.info.outputs.cert_manager_role_arn }}
         EXTERNAL_DNS_ROLE_ARN: ${{ steps.info.outputs.external_dns_role_arn}}
         ENVIRONMENT: ${{ vars.ENVIRONMENT }}
+        GITHUB_TOKEN: ${{ secrets.FLUX_GITHUB_TOKEN }}
       run: |
         echo "$CERT_MANAGER_ROLE_ARN"
         echo "$EXTERNAL_DNS_ROLE_ARN"
