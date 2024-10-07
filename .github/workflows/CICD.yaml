@@ -34,7 +34,7 @@ jobs:
         role-to-assume: "arn:aws:iam::255945442255:role/GitHubAction-AssumeRoleWithAction-Capstone"
         role-session-name: GitHub_to_AWS_via_FederatedOIDC
 
-    - name: Sts GetCallerIdentity
+    - name: STS Get-Caller-Identity
       run: |
           aws sts get-caller-identity
 
@@ -110,8 +110,8 @@ jobs:
       with:
         version: 'latest'
 
-    - name: Run Flux CLI
-      run: flux version --client
+    # - name: Run Flux CLI
+    #   run: flux version --client
 
     - uses: azure/setup-helm@v4.2.0
       with:
@@ -202,6 +202,7 @@ jobs:
         echo "$CERT_MANAGER_ROLE_ARN"
         echo "$EXTERNAL_DNS_ROLE_ARN"
         echo "$ENVIRONMENT"
+        echo "$ACME_SERVER"
         cd eks-infra
         kubectl get po -A
         bash eks-infra.sh
