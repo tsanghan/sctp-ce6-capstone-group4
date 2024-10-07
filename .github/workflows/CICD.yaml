@@ -190,10 +190,12 @@ jobs:
         echo "external_dns_role_arn=$(tofu output -json | jq -r '.external_dns_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
 
     - name: Show kubectl working
+      env:
+        cert_manager_role_arn: ${{ steps.info.outputs.cert_manager_role_arn }}
+        external_dns_role_arn: ${{ steps.info.outputs.external_dns_role_arn}}
       run: |
-        echo "${{ steps.info.outputs.cert_manager_role_arn }}"
-        echo "${{ steps.info.outputs.external_dns_role_arn }}"
-        cat ~/.kube/config
+        cd eks-infra
         kubectl get po
+        bash eks-infra.sh
 
 
