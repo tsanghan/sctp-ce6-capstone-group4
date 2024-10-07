@@ -108,7 +108,7 @@ jobs:
     - name: Install kubectl
       uses: tsanghan/setup-kubectl-action@main
       with:
-        version: '4.6.0'
+        version: '1.31.1'
 
     - name: Setup Flux CLI
       uses: fluxcd/flux2/action@main
@@ -188,18 +188,10 @@ jobs:
         cd aws-infra
         echo "cert_manager_role_arn=$(tofu output -json | jq -r '.cert_manager_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
         echo "external_dns_role_arn=$(tofu output -json | jq -r '.external_dns_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
-        echo "kubeconfig=$(tofu output -json | yq -M -P '.eks_kubeconfig.value')" >> "$GITHUB_OUTPUT"
-        echo "$"
 
-    - name: Setup Kubeconfig
-      uses: azure/k8s-set-context@v4
-      with:
-        method: kubeconfig
-        kubeconfig: "${{ steps.info.outputs.kubeconfig }}"
-        # context: <context name> # current-context from kubeconfig is used as default
-
-    - name: Show kubeclt working
+    - name: Show kubectl working
       run: |
+        cat ~/.kube/config
         kubectl get po
 
 
