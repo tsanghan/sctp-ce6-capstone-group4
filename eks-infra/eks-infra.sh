@@ -29,8 +29,9 @@ kubectl apply -f cert-manager/role.yaml
 kubectl apply -f cert-manager/rolebinding.yaml
 # at this point `cert_manager_role_arn` & `environment` & `GITHUB_TOKEN` must be exported
 envsubst < cert-manager/flux-cert-manager.tpl | kubectl apply -f -
-while [ "$(k get crd certificates.cert-manager.io 2> /dev/null)" = "" ]; do
-  echo "waiting"; sleep 5
+while [ "$(kubectl get crd certificates.cert-manager.io 2> /dev/null)" = "" ]; do
+  echo "waiting"
+  sleep 5
 done
 kubectl wait --timeout=10m -n cert-manager deployment/cert-manager-webhook --for=condition=Available
 envsubst < cert-manager/cluster-issuer-"$ENVIRONMENT".tpl | kubectl apply -f -
@@ -39,7 +40,7 @@ envsubst < cert-manager/cluster-issuer-"$ENVIRONMENT".tpl | kubectl apply -f -
 kubectl apply -f envoygateway/namespace.yaml
 kubectl wait --timeout=5m ns/envoy-gateway-system --for=jsonpath='{.status.phase}'=Active
 kubectl apply -f envoygateway/flux-envoygateway.yaml
-while [ "$(k -n envoy-gateway-system get deployment/envoy-gateway 2> /dev/null)" = "" ]; do
+while [ "$(kubectl -n envoy-gateway-system get deployment/envoy-gateway 2> /dev/null)" = "" ]; do
   echo "waiting"; sleep 2
 done
 kubectl wait --timeout=10m -n envoy-gateway-system deployment/envoy-gateway --for=condition=Available
