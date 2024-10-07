@@ -186,13 +186,14 @@ jobs:
       id: info
       run: |
         cd aws-infra
-        echo "cert_manager_role_arn=$(tofu output -json | jq -r '.cert_manager_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
-        echo "external_dns_role_arn=$(tofu output -json | jq -r '.external_dns_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
+        echo "CERT_MANAGER_ROLE_ARN=$(tofu output -json | jq -r '.cert_manager_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
+        echo "EXTERNAL_DNS_ROLE_ARN=$(tofu output -json | jq -r '.external_dns_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
 
     - name: Show kubectl working
       env:
-        cert_manager_role_arn: ${{ steps.info.outputs.cert_manager_role_arn }}
-        external_dns_role_arn: ${{ steps.info.outputs.external_dns_role_arn}}
+        CERT_MANAGER_ROLE_ARN: ${{ steps.info.outputs.cert_manager_role_arn }}
+        EXTERNAL_DNS_ROLE_ARN: ${{ steps.info.outputs.external_dns_role_arn}}
+        ENVIRONMENT: ${{ vars.ENVIRONMENT }}
       run: |
         cd eks-infra
         kubectl get po

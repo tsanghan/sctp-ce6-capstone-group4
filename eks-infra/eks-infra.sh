@@ -28,7 +28,7 @@ kubectl apply -f cert-manager/rolebinding.yaml
 envsubst < cert-manager/flux-cert-manager.tpl | kubectl apply -f -
 sleep 10
 kubectl wait --timeout=10m -n cert-manager deployment/cert-manager-webhook --for=condition=Available
-envsubst < cert-manager/cluster-issuer-"$environment".tpl | kubectl apply -f -
+envsubst < cert-manager/cluster-issuer-"$ENVIRONMENT".tpl | kubectl apply -f -
 
 #kubectl create ns envoy-gateway-system --dry-run=client -oyaml | egrep -v "{}|null" | k apply -f -
 kubectl apply -f envoygateway/namespace.yaml

@@ -14,7 +14,7 @@ spec:
     - dns01:
         route53:
           region: ap-southeast-1
-          role: ${cert_manager_role_arn}
+          role: ${CERT_MANAGER_ROLE_ARN}
           auth:
             kubernetes:
               serviceAccountRef:
