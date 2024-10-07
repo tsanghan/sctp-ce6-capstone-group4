@@ -191,6 +191,8 @@ jobs:
 
     - name: Show kubectl working
       run: |
+        echo "${{ steps.info.outputs.cert_manager_role_arn }}"
+        echo "${{ steps.info.outputs.external_dns_role_arn }}"
         cat ~/.kube/config
         kubectl get po
 
