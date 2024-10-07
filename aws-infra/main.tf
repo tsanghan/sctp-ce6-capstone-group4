@@ -50,7 +50,7 @@ module "make_eks" {
   ami_release_version                  = var.ami_release_version
   oidc_fully_qualified_audiences       = var.oidc_fully_qualified_audiences
   role_policy_arns                     = var.role_policy_arns
-  cluster_endpoint_public_access_cidrs = ["${data.http.myip.response_body}/32", "${var.MYIP}/32"]
+  cluster_endpoint_public_access_cidrs = ["${data.http.myip.response_body}/32", "${vars.MYIP}/32"]
   tags                                 = var.tags
 
 }
