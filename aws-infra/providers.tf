@@ -28,10 +28,10 @@ terraform {
       source  = "hashicorp/local"
       version = "2.5.2"
     }
-    flux = {
-      source  = "fluxcd/flux"
-      version = ">= 1.2"
-    }
+    # flux = {
+    #   source  = "fluxcd/flux"
+    #   version = ">= 1.2"
+    # }
     # github = {
     #   source  = "integrations/github"
     #   version = ">= 6.1"
@@ -78,25 +78,24 @@ provider "aws" {
 #   # token                  = data.aws_eks_cluster_auth.main.token
 # }
 
-
-provider "flux" {
-  kubernetes = {
-    host                   = module.make_eks.cluster_endpoint
-    cluster_ca_certificate = base64decode(module.make_eks.cluster_certificate_authority_data)
-    exec = {
-      api_version = "client.authentication.k8s.io/v1beta1"
-      args        = ["eks", "get-token", "--cluster-name", module.make_eks.cluster_name]
-      command     = "aws"
-    }
-  }
-  git = {
-    url = "https://github.com/${var.github_org}/${var.github_repository}.git"
-    http = {
-      username = "git" # This can be any string when using a personal access token
-      password = var.github_token
-    }
-  }
-}
+# provider "flux" {
+#   kubernetes = {
+#     host                   = module.make_eks.cluster_endpoint
+#     cluster_ca_certificate = base64decode(module.make_eks.cluster_certificate_authority_data)
+#     exec = {
+#       api_version = "client.authentication.k8s.io/v1beta1"
+#       args        = ["eks", "get-token", "--cluster-name", module.make_eks.cluster_name]
+#       command     = "aws"
+#     }
+#   }
+#   git = {
+#     url = "https://github.com/${var.github_org}/${var.github_repository}.git"
+#     http = {
+#       username = "git" # This can be any string when using a personal access token
+#       password = var.github_token
+#     }
+#   }
+# }
 
 # provider "github" {
 #   owner = var.github_org

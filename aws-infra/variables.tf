@@ -82,21 +82,21 @@ variable "region" {
   default = "ap-southeast-1"
 }
 
-variable "github_org" {
-  type    = string
-  default = "tsanghan"
-}
+# variable "github_org" {
+#   type    = string
+#   default = "tsanghan"
+# }
 
-variable "github_repository" {
-  type    = string
-  default = "fleet-infra"
-}
+# variable "github_repository" {
+#   type    = string
+#   default = "fleet-infra"
+# }
 
-variable "github_token" {
-  type      = string
-  sensitive = true
-  default   = ""
-}
+# variable "github_token" {
+#   type      = string
+#   sensitive = true
+#   default   = ""
+# }
 
 variable "hosted_zone" {
   type    = string

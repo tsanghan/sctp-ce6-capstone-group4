@@ -40,3 +40,4 @@ terraform.rc
 
 .envrc
 *.hcl
+switch-to-*.sh
