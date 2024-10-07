@@ -40,4 +40,4 @@ terraform.rc
 
 .envrc
 *.hcl
-switch-to-production.sh
+switch-to-*.sh
