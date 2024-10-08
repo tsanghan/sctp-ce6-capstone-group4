@@ -41,8 +41,8 @@ spec:
       target:
         kind: Deployment
   values:
-    crds:
-      enabled: true
+    rbac:
+      create: true
     serviceAccount:
       name: "external-dns"
       automountServiceAccountToken: true
