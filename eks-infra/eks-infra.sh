@@ -47,6 +47,9 @@ kubectl wait --timeout=10m -n envoy-gateway-system deployment/envoy-gateway --fo
 kubectl apply -f envoygateway/gateway_class.yaml
 kubectl apply -f envoygateway/gateway_envoyproxy.yaml
 
+envsubst < external-dns/flux-external-dns.tpl | kubectl apply -f -
+
+# helm repo add jetstack https://charts.jetstack.io --force-update
 # helm install \
 #   cert-manager jetstack/cert-manager \
 #   --namespace cert-manager \
@@ -60,4 +63,3 @@ kubectl apply -f envoygateway/gateway_envoyproxy.yaml
 #   --create-namespace \
 #   --namespace envoy-gateway-system \
 #   --version v0.0.0-latest
-

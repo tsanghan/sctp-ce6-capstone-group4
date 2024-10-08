@@ -172,7 +172,6 @@ module "cert-manager-irsa" {
   }
 }
 
-
 module "external-dns-irsa" {
   source = "./modules/irsa-external-dns"
 
@@ -184,7 +183,19 @@ module "external-dns-irsa" {
     this = {
       provider_arn = module.make_eks.oidc_provider_arn
       # namespace is inherited from chart
-      service_account = "external-dns-sa"
+      service_account = "external-dns"
     }
   }
+}
+
+data "aws_route53_zone" "selected" {
+  name = "sctp-sandbox.com."
+}
+
+resource "aws_route53_record" "caa" {
+  zone_id = data.aws_route53_zone.selected.zone_id
+  name    = data.aws_route53_zone.selected.name
+  type    = "CAA"
+  ttl     = 60
+  records = ["0 issue \"amazon.com\"", "128 issue \"letsencrypt.org\""]
 }

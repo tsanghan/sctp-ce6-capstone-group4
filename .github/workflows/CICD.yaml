@@ -130,7 +130,7 @@ jobs:
         role-to-assume: "arn:aws:iam::255945442255:role/GitHubAction-AssumeRoleWithAction-Capstone"
         role-session-name: GitHub_to_AWS_via_FederatedOIDC
 
-    - name: Sts GetCallerIdentity
+    - name: STS Get-Caller-Identity
       run: |
           aws sts get-caller-identity
 
