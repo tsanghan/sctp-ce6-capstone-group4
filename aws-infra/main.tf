@@ -188,10 +188,6 @@ module "external-dns-irsa" {
   }
 }
 
-data "aws_route53_zone" "selected" {
-  name = "sctp-sandbox.com."
-}
-
 resource "aws_route53_record" "caa" {
   zone_id = data.aws_route53_zone.selected.zone_id
   name    = data.aws_route53_zone.selected.name
