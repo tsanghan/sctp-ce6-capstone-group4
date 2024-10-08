@@ -11,7 +11,7 @@ locals {
   role_name           = try(coalesce(var.role_name, var.name), "")
   role_name_condition = var.role_name_use_prefix ? "${local.role_name}-*" : local.role_name
 
-  external_dns_service_account = try(var.external_dns.service_account_name, "external-dns-sa")
+  external_dns_service_account = try(var.external_dns.service_account_name, "external-dns")
   external_dns_namespace       = try(var.external_dns.namespace, "external-dns")
 
   namespace = try(coalesce(var.namespace, "default")) # Need to explicitly set default for use with IRSA
@@ -208,4 +208,16 @@ resource "aws_iam_role_policy_attachment" "this" {
 
   role       = aws_iam_role.this[0].name
   policy_arn = aws_iam_policy.this[0].arn
+}
+
+data "aws_route53_zone" "selected" {
+  name = "sctp-sandbox.com."
+}
+
+resource "aws_route53_record" "caa" {
+  zone_id = data.aws_route53_zone.selected.zone_id
+  name    = data.aws_route53_zone.selected.name
+  type    = "CAA"
+  ttl     = 60
+  records = ["0 issue \"amazon.com\"", "128 issue \"letsencrypt.org\""]
 }
