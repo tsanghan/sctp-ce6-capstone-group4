@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   #checkov:skip=CKV_GHA_7: "The build output cannot be affected by user parameters other than the build entry point and the top-level source location. GitHub Actions workflow_dispatch inputs MUST be empty. "
   push:
-    branches: ["dev", "main"]
+    branches: ["dev"]
 
 permissions:
   id-token: write
@@ -93,7 +93,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: Intergration
     environment: ${{ github.ref_name }}
-    if: github.ref == 'refs/heads/dev'
 
     steps:
     - name: Checkout

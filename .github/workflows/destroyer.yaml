@@ -37,7 +37,7 @@ jobs:
 
     - name: Destroy Gateway
       run: |
-        aws eks update-cluster-config --name ${{ inputs.cluster_name }} --resources-vpc-config "publicAccessCidrs=$(curl -s api.ipify.org)/32"
+        aws eks update-cluster-config --name ${{ inputs.cluster_name }} --resources-vpc-config "publicAccessCidrs=$(curl -s api.ipify.org)/32" --output yaml
         test -d ~/.kube || mkdir ~/.kube
         if [[ $(aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ inputs.cluster_name }}) != "" ]]; then
             if [[ "$(kubectl -n demoapp-gw get gateway -o=name)" != "" ]]; then
