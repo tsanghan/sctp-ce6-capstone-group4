@@ -7,6 +7,10 @@ on:
           required: true
           type: string
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   Destroy:
     runs-on: ubuntu-latest
@@ -31,12 +35,16 @@ jobs:
       with:
         version: '1.31.1'
 
-    - name: Destroy Gateway & HTTPRoute resources
+    - name: Destroy Gateway
       run: |
+        aws eks update-cluster-config --name ${{ inputs.cluster_name }} --resources-vpc-config "publicAccessCidrs=$(curl -s api.ipify.org)/32" --output yaml
         test -d ~/.kube || mkdir ~/.kube
-        aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ inputs.cluster_name }}
-        echo $(kubectl -n demoapp-gw get gateway -o=name) | xargs -I% kubectl delete -n demoapp-gw %
-        sleep 30
+        if [[ $(aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ inputs.cluster_name }}) != "" ]]; then
+            if [[ "$(kubectl -n demoapp-gw get gateway -o=name)" != "" ]]; then
+                echo $(kubectl -n demoapp-gw get gateway -o=name) | xargs -I% kubectl delete -n demoapp-gw %
+                sleep 15
+            fi
+        fi
 
     - name: Setup Tofu
       uses: opentofu/setup-opentofu@v1
