@@ -6,6 +6,7 @@ on:
         cluster_name:
           required: true
           type: string
+
 permissions:
   id-token: write
 
@@ -39,7 +40,7 @@ jobs:
         aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ inputs.cluster_name }}
         if [[ "$(kubectl -n demoapp-gw get gateway -o=name)" != "" ]]; then
             echo $(kubectl -n demoapp-gw get gateway -o=name) | xargs -I% kubectl delete -n demoapp-gw %
-            sleep 30
+            sleep 15
         fi
 
     - name: Setup Tofu
