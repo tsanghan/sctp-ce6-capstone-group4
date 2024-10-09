@@ -47,6 +47,9 @@ kubectl wait --timeout=10m -n envoy-gateway-system deployment/envoy-gateway --fo
 kubectl apply -f envoygateway/gateway_class.yaml
 kubectl apply -f envoygateway/gateway_envoyproxy.yaml
 
+#kubectl create ns external-dns --dry-run=client -oyaml | egrep -v "{}|null" | k apply -f -
+kubectl apply -f external-dns/namespace.yaml
+kubectl wait --timeout=5m ns/external-dns --for=jsonpath='{.status.phase}'=Active
 envsubst < external-dns/flux-external-dns.tpl | kubectl apply -f -
 
 # helm repo add jetstack https://charts.jetstack.io --force-update

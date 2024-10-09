@@ -36,6 +36,7 @@ jobs:
         test -d ~/.kube || mkdir ~/.kube
         aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ inputs.cluster_name }}
         echo $(kubectl -n demoapp-gw get gateway -o=name) | xargs -I% kubectl delete -n demoapp-gw %
+        sleep 30
 
     - name: Setup Tofu
       uses: opentofu/setup-opentofu@v1
