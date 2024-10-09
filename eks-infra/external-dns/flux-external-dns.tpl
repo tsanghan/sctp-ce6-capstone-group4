@@ -50,3 +50,4 @@ spec:
       - gateway-httproute
     extraArgs:
       - --txt-owner-id=tsanghan-ce6
+    policy: sync
