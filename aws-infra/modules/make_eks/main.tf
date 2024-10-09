@@ -90,6 +90,10 @@ module "eks" {
   create_kms_key            = false
   cluster_encryption_config = {}
 
+  iam_role_tags = merge(var.tags, {
+    EKS_Cluster = var.eks_cluster_name
+  })
+
   tags = merge(var.tags, {
     "karpenter.sh/discovery" = var.eks_cluster_name
     EKS                      = "tsanghan-ce6"

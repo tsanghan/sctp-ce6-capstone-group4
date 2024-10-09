@@ -62,4 +62,6 @@ jobs:
         TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
         cd aws-infra
+        tofu state rm module.make_eks.module.eks.aws_eks_addon.this["amazon-cloudwatch-observability"]
+        tofu state rm module.make_eks.module.eks.aws_eks_addon.before_compute["vpc-cni"]
         tofu destroy -auto-approve
