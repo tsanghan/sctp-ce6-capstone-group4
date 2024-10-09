@@ -200,7 +200,7 @@ resource "aws_route53_record" "caa" {
 
 resource "aws_eks_access_entry" "me" {
   cluster_name      = module.make_eks.cluster_name
-  principal_arn     = data.aws_iam_user.me
+  principal_arn     = data.aws_iam_user.me.arn
   kubernetes_groups = ["system:masters"]
   type              = "STANDARD"
 }
