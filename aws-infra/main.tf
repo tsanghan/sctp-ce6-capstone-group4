@@ -172,7 +172,6 @@ module "cert-manager-irsa" {
   }
 }
 
-
 module "external-dns-irsa" {
   source = "./modules/irsa-external-dns"
 
@@ -180,11 +179,21 @@ module "external-dns-irsa" {
   oidc_provider_arn              = module.make_eks.oidc_provider_arn
   external_dns_route53_zone_arns = [data.aws_route53_zone.selected.arn]
 
+
   oidc_providers = {
     this = {
       provider_arn = module.make_eks.oidc_provider_arn
       # namespace is inherited from chart
-      service_account = "external-dns-sa"
+      namespace       = "external-dns"
+      service_account = "external-dns"
     }
   }
+}
+
+resource "aws_route53_record" "caa" {
+  zone_id = data.aws_route53_zone.selected.zone_id
+  name    = data.aws_route53_zone.selected.name
+  type    = "CAA"
+  ttl     = 60
+  records = ["0 issue \"amazon.com\"", "128 issue \"letsencrypt.org\""]
 }
