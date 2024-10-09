@@ -41,18 +41,12 @@ spec:
       target:
         kind: Deployment
   values:
-    rbac:
-      create: true
     serviceAccount:
       name: "external-dns"
       automountServiceAccountToken: true
       annotations:
         "eks.amazonaws.com/role-arn": ${EXTERNAL_DNS_ROLE_ARN}
     sources:
-        - service
-        - ingress
-        - gateway-httproute
+      - gateway-httproute
     extraArgs:
-        - --domain-filter=sctp-sandbox.com
-        - --txt-owner-id=tsanghan-ce6
-        - --namespace=demoapp-gw
+      - --txt-owner-id=tsanghan-ce6
