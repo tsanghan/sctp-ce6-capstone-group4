@@ -6,6 +6,8 @@ on:
         cluster_name:
           required: true
           type: string
+permissions:
+  id-token: write
 
 jobs:
   Destroy:
@@ -35,8 +37,10 @@ jobs:
       run: |
         test -d ~/.kube || mkdir ~/.kube
         aws eks update-kubeconfig --region ${{ vars.AWS_REGION }} --name ${{ inputs.cluster_name }}
-        echo $(kubectl -n demoapp-gw get gateway -o=name) | xargs -I% kubectl delete -n demoapp-gw %
-        sleep 30
+        if [[ "$(kubectl -n demoapp-gw get gateway -o=name)" != "" ]]; then
+            echo $(kubectl -n demoapp-gw get gateway -o=name) | xargs -I% kubectl delete -n demoapp-gw %
+            sleep 30
+        fi
 
     - name: Setup Tofu
       uses: opentofu/setup-opentofu@v1
