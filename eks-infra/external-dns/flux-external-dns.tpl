@@ -3,7 +3,7 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: external-dns
-  namespace: default
+  namespace: external-dns
 spec:
   type: default
   interval: 5m0s
@@ -13,7 +13,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: external-dns
-  namespace: default
+  namespace: external-dns
 spec:
   interval: 10m
   timeout: 5m

@@ -31,8 +31,8 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4.0.2
       with:
         aws-region: ${{ vars.AWS_REGION }}
-        role-to-assume: "arn:aws:iam::255945442255:role/GitHubAction-AssumeRoleWithAction-Capstone"
-        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        role-to-assume: ${{ vars.ROLE_TO_ASSUME }}
+        role-session-name: ${{ vars.ROLE_SESSION_NAME }}
 
     - name: STS Get-Caller-Identity
       run: |
@@ -127,8 +127,8 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4.0.2
       with:
         aws-region: ${{ vars.AWS_REGION }}
-        role-to-assume: "arn:aws:iam::255945442255:role/GitHubAction-AssumeRoleWithAction-Capstone"
-        role-session-name: GitHub_to_AWS_via_FederatedOIDC
+        role-to-assume: ${{ vars.ROLE_TO_ASSUME }}
+        role-session-name: ${{ vars.ROLE_SESSION_NAME }}
 
     - name: STS Get-Caller-Identity
       run: |

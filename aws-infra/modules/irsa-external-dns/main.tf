@@ -210,14 +210,14 @@ resource "aws_iam_role_policy_attachment" "this" {
   policy_arn = aws_iam_policy.this[0].arn
 }
 
-data "aws_route53_zone" "selected" {
-  name = "sctp-sandbox.com."
-}
+# data "aws_route53_zone" "selected" {
+#   name = "sctp-sandbox.com."
+# }
 
-resource "aws_route53_record" "caa" {
-  zone_id = data.aws_route53_zone.selected.zone_id
-  name    = data.aws_route53_zone.selected.name
-  type    = "CAA"
-  ttl     = 60
-  records = ["0 issue \"amazon.com\"", "128 issue \"letsencrypt.org\""]
-}
+# resource "aws_route53_record" "caa" {
+#   zone_id = data.aws_route53_zone.selected.zone_id
+#   name    = data.aws_route53_zone.selected.name
+#   type    = "CAA"
+#   ttl     = 60
+#   records = ["0 issue \"amazon.com\"", "128 issue \"letsencrypt.org\""]
+# }
