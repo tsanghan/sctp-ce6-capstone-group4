@@ -197,3 +197,14 @@ resource "aws_route53_record" "caa" {
   ttl     = 60
   records = ["0 issue \"amazon.com\"", "128 issue \"letsencrypt.org\""]
 }
+
+# resource "aws_eks_access_entry" "me" {
+#   cluster_name      = module.make_eks.cluster_name
+#   principal_arn     = data.aws_iam_user.me.arn
+#   kubernetes_groups = ["system:masters"]
+#   type              = "STANDARD"
+# }
+
+# data "aws_iam_user" "me" {
+#   user_name = "tsanghan"
+# }

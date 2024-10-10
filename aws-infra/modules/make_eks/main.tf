@@ -4,7 +4,7 @@ module "iam-assumable-role-with-oidc" {
 
   create_role = true
 
-  role_name = "AmazonEKS_Observability_Role"
+  role_name = "${var.eks_cluster_name}-AmazonEKS_Observability_Role"
 
   tags = merge(var.tags, {
     Role = "AmazonEKS_Observability_Role"
@@ -89,6 +89,10 @@ module "eks" {
 
   create_kms_key            = false
   cluster_encryption_config = {}
+
+  iam_role_tags = merge(var.tags, {
+    EKS_Cluster = var.eks_cluster_name
+  })
 
   tags = merge(var.tags, {
     "karpenter.sh/discovery" = var.eks_cluster_name
