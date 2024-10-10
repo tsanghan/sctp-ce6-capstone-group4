@@ -4,7 +4,7 @@ module "iam-assumable-role-with-oidc" {
 
   create_role = true
 
-  role_name = "AmazonEKS_Observability_Role"
+  role_name = "${var.eks_cluster_name}-AmazonEKS_Observability_Role"
 
   tags = merge(var.tags, {
     Role = "AmazonEKS_Observability_Role"
