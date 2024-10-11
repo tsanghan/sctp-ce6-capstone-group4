@@ -65,3 +65,15 @@ jobs:
         tofu state rm 'module.make_eks.module.eks.aws_eks_addon.this["amazon-cloudwatch-observability"]'
         tofu state rm 'module.make_eks.module.eks.aws_eks_addon.before_compute["vpc-cni"]'
         tofu destroy -auto-approve
+
+    - name: Install yq
+      uses: Makepad-fr/setup-yq-action@main
+      with:
+        version: '4.44.3'
+
+    - name: Destroy Log_Groups
+      run: |
+        log_groups=($(aws logs describe-log-groups | \
+                        cluster_name=${{ inputs.cluster_name }} yq '.logGroups[] |
+                            select(.logGroupName == "*'$cluster_name'*") | .logGroupName'))
+        for log_group in $log_groups; do aws logs delete-log-group --log-group-name $log_group; done
