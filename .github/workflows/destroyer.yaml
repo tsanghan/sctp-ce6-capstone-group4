@@ -76,5 +76,5 @@ jobs:
         log_groups=($(aws logs describe-log-groups \
                         --log-group-name-prefix '/aws/containerinsights/${{ inputs.cluster_name }}' | \
                         yq '.logGroups[].logGroupName'))
-        echo "${log_groups[@]}
+        echo "${log_groups[@]}"
         for log_group in "${log_groups[@]}"; do aws logs delete-log-group --log-group-name $log_group; done
