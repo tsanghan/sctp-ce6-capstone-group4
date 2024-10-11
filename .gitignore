@@ -41,3 +41,4 @@ terraform.rc
 .envrc
 *.hcl
 switch-to-*.sh
+add-my-ip.sh
