@@ -1,2 +1,2 @@
 # sctp-ce6-capstone-group4
-[![CICD](https://github.com/tsanghan/sctp-ce6-capstone-group4/actions/workflows/CICD.yaml/badge.svg)](https://github.com/tsanghan/sctp-ce6-capstone-group4/actions/workflows/CICD.yaml)
+[![CICD](https://github.com/tsanghan/sctp-ce6-capstone-group4/actions/workflows/CICD.yaml/badge.svg)](https://github.com/tsanghan/sctp-ce6-capstone-group4/actions/workflows/CICD.yaml) [![Now I am become Death, the Destroyer of Worlds](https://github.com/tsanghan/sctp-ce6-capstone-group4/actions/workflows/destroyer.yaml/badge.svg)](https://github.com/tsanghan/sctp-ce6-capstone-group4/actions/workflows/destroyer.yaml)

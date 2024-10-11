@@ -80,6 +80,8 @@ jobs:
         tofu validate
 
     - name: Todu Plan
+      env:
+        TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
         cd aws-infra
         tofu plan
@@ -176,6 +178,8 @@ jobs:
     #     tofu validate
 
     - name: Tofu Plan
+      env:
+        TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
         cd aws-infra
         tofu plan

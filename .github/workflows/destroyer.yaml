@@ -73,7 +73,8 @@ jobs:
 
     - name: Destroy Log_Groups
       run: |
-        log_groups=($(aws logs describe-log-groups | \
-                        cluster_name=${{ inputs.cluster_name }} yq '.logGroups[] |
-                            select(.logGroupName == "*'$cluster_name'*") | .logGroupName'))
-        for log_group in $log_groups; do aws logs delete-log-group --log-group-name $log_group; done
+        log_groups=($(aws logs describe-log-groups \
+                        --log-group-name-prefix '/aws/containerinsights/${{ inputs.cluster_name }}' | \
+                        yq '.logGroups[].logGroupName'))
+        echo "${log_groups[@]}"
+        for log_group in "${log_groups[@]}"; do aws logs delete-log-group --log-group-name $log_group; done
