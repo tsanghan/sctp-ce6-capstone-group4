@@ -114,15 +114,15 @@ AWS CloudWatch will have the following resources created,
 
 Log Groups
 
-![Log Groups](/assets/images/Log_Groups.PNG)
+![Log Groups](/assets/images/log_groups.png)
 
 Dashboards
 
-![Dashboards](/assets/images/dashboards.PNG)
+![Dashboards](/assets/images/dashboards.png)
 
 The following section will discuss the `dashboard-apps` which is show below.
 
-![Charts](/assets/images/CW-Charts.PNG)
+![Charts](/assets/images/charts.png)
 
 The above 3 Charts was created in `dashboard-apps` as a show case on how to utilize `Log Insights` `Query` syntax for filtering and extracting information to create charts.
 
