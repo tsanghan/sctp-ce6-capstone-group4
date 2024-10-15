@@ -110,9 +110,9 @@ Fortunately, we can export the automatic dashboards in `Container Insights` menu
 
 `dashboard-apps` is the dashboard I created with 3 charts.
 
-With the above TF configuration setting and standing up an `EKS` cluster via `GitHub Workflow` (GitHub Workflow will be discussed in `Part 2`) and deployment of `Google microservices-demo Online Boutique` (deployment of `Google microservices-demo Online Boutique` is via `Fluxcd` GitOps, will be discussed in `Part 2`) and allowing the included `loadgenerator` pod to have  time to generate requests, we will have sufficient logs data to generate our 3 custom charts.
+With the above TF configuration setting and standing up an `EKS` cluster via `GitHub Workflow` (GitHub Workflow will be discussed in `Part 2`) and deployment of `Google microservices-demo Online Boutique` (deployment of `Google microservices-demo Online Boutique` is via `Fluxcd` GitOps, will be discussed in `Part 2`) and allowing the included `loadgenerator` pod to have  time to generate requests, we will have sufficient logs data to generate our 3 custom charts show below.
 
-AWS CloudWatch will have the following resources created,
+AWS CloudWatch will also have the following resources created,
 
 Log Groups
 
