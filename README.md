@@ -77,7 +77,7 @@ aws eks describe-addon-versions --addon-name <add-on name> | less
 Item #1 above will turn on all Kubernetes systems/cluster logs and sent to `Amazon CloudWatch` service and into a `Log Group` with name
 * `/aws/eks/<Cluster_Name>/cluster`
 
-Item #2 above will deploy `amazon-cloudwatch-observability` add-on, which consists of `FluentBit` DaemonSet that will collect Application Logs from `kubelet` and sent the logs to `Amazon CloudWatch`. The Log Groups create are as follow,
+Item #2 above will deploy `amazon-cloudwatch-observability` add-on, which consists of `FluentBit` DaemonSet that will collect Application Logs from `kubelet`[^1] and sent the logs to `Amazon CloudWatch`. The Log Groups create are as follow,
 * `/aws/containerinsights/<Cluster_Name>/application`
 * `/aws/containerinsights/<Cluster_Name>/performance`
 * `/aws/containerinsights/<Cluster_Name>/dataplane`
@@ -216,5 +216,7 @@ SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields log_processed.
 
 Both query looks similar, both utilizing `CloudWatch regex` language syntax (`/Amount: (?<currency>[A-Z]{3}?)/`) where `(?...?)` is a `named capture group` with the name being specified within `<...>` and `[A-Z]{3}` is the `regex` syntax for matching `currency code` while `(?<amount>[0-9.]{10,13}?)` capture the `currency amount`.
 The statistics calculation also differ by one using `count(*)` and another using `sum(*)`, thus yielding 2 different bar charts.
+
+[^1]: [How nodes handle container logs](https://kubernetes.io/docs/concepts/cluster-administration/logging/#how-nodes-handle-container-logs)
 
 ## Part 2
