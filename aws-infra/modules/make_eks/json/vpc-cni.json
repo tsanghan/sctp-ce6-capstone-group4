@@ -1,13 +1,13 @@
 {
-    "env": {
-      "ENABLE_POD_ENI": "true",
-      "ENABLE_PREFIX_DELEGATION": "true",
-      "POD_SECURITY_GROUP_ENFORCING_MODE": "standard",
-      "WARM_IP_TARGET": "7",
-      "MINIMUM_IP_TARGET": "20"
-    },
-    "nodeAgent": {
-      "enablePolicyEventLogs": "true"
-    },
-    "enableNetworkPolicy": "true"
-  }
+  "env": {
+    "ENABLE_POD_ENI": "true",
+    "ENABLE_PREFIX_DELEGATION": "true",
+    "POD_SECURITY_GROUP_ENFORCING_MODE": "standard",
+    "WARM_IP_TARGET": "7",
+    "MINIMUM_IP_TARGET": "20"
+  },
+  "nodeAgent": {
+    "enablePolicyEventLogs": "true"
+  },
+  "enableNetworkPolicy": "true"
+}

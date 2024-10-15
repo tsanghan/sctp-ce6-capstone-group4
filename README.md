@@ -14,7 +14,7 @@ There is urgency to detect and flag out systems and applications failure early, 
 Your role as a Site Reliability Engineer is to provide monitoring capabilities that are observable and traceable to stakeholders.
 
 #### Project Completion Criteria:
-* No CICD Required
+* No CI/CD Required
 * Only one environment suffix.
 * Application deployment must be containerized
 * Applications logging must be centrally managed.
@@ -220,3 +220,90 @@ Both query looks similar, both utilizing `CloudWatch regex` language syntax (`/A
 The statistics calculation also differ by one using `count(*)` and another using `sum(*)`, thus yielding 2 different bar charts.
 
 ## Part 2
+
+For the purpose of the Capstone Project, no CI/CD is required. However, CI/CD is implemented in this Capstone Project repository.
+
+There are only 2 branches in the repository, `main` and `dev`. However, no actual `Production EKS` cluster and `Development EKS` cluster are build and operational at the same time.
+This is for costing reason and also not a requirement for the Capstone Project.
+
+There are also 2 GitHub Action `Environment`, namely `main` and `dev` for the Workflow to run in.
+
+There is no different in the workflow for `main` and `dev` branches, the deployed `EKS cluster` are identical (even thought they could be set up differently with varied parameters), except for the deployment of `cert-manager` (`cert-manager` will be discuss below) which for `dev` branch will utilize `Let's Encrypt Staging CA` while the `main` branch will enable `cert-manager` to use `Let's Encrypt Production CA`.
+
+The `switch` between `Staging CA` and `Production CA` are store in the GitHub Action `Environment Variable` `ENVIRONMENT` with value of `staging` for `dev` branch and value of `production` for the `main` branch.
+
+The `switching` is done via `github` context property `github.ref_name` in [`jobs.<job_id>.environment`](/.github/workflows/CICD.yaml#L21)
+
+Creation of `Amazon EKS` is via `OpenTofu` TF configuration files in [`aws-infra`](/aws-infra/) as described in `Part 1`.
+
+Additional details not mentioned in `Part 1` of the deployment of `Amazon EKS` is as follow,
+
+* `Amazon EKS` is deployed using `t3.large` AMI Type (`AWS Nitro System`) and with add-on `VPC-CNI` using the following configuration,
+
+```
+{
+  "env": {
+    "ENABLE_POD_ENI": "true",
+    "ENABLE_PREFIX_DELEGATION": "true",
+    "POD_SECURITY_GROUP_ENFORCING_MODE": "standard",
+    "WARM_IP_TARGET": "7",
+    "MINIMUM_IP_TARGET": "20"
+  },
+  "nodeAgent": {
+    "enablePolicyEventLogs": "true"
+  },
+  "enableNetworkPolicy": "true"
+}
+```
+
+This is to overcome the limitation of available number of Pods per Nodes based on the [`Amazon EC2 instance type supported maximum number of elastic network interfaces and a maximum number of IP addresses that can be assigned to each network interface.`](https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html)
+
+The following [`command`](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AvailableIpPerENI.html) will list `supported network interfaces and IP addresses per interface` for a specific instance type. Example below shows `t3` instance type.
+
+```
+aws ec2 describe-instance-types \
+    --filters "Name=instance-type,Values=t3.*" \
+    --query "InstanceTypes[].{ \
+        Type: InstanceType, \
+        MaxENI: NetworkInfo.MaximumNetworkInterfaces, \
+        IPv4addr: NetworkInfo.Ipv4AddressesPerInterface}" \
+    --output table
+```
+
+The following is example output for instance type `t3`.
+
+```
+--------------------------------------
+|        DescribeInstanceTypes       |
++----------+----------+--------------+
+| IPv4addr | MaxENI   |    Type      |
++----------+----------+--------------+
+|  15      |  4       |  t3.2xlarge  |
+|  15      |  4       |  t3.xlarge   |
+|  12      |  3       |  t3.large    |
+|  6       |  3       |  t3.medium   |
+|  2       |  2       |  t3.nano     |
+|  2       |  2       |  t3.micro    |
+|  4       |  3       |  t3.small    |
++----------+----------+--------------+
+```
+
+With the results of the table above, we can see that even for instance type `t3.2xlarge` the maximum Pods per Node is `59 (15 * 4 - 1)` much lesser then the Kubernetes defined thresholds for Pods.[^2] [^3].
+
+[^2]: kubernetes.io/docs/setup/best-practices/cluster-large/
+[^3]: https://github.com/kubernetes/community/blob/master/sig-scalability/configs-and-limits/thresholds.md
+
+The `VPC-CNI` configuration key to enable `more IP addresses to Amazon EKS nodes with prefixes` is `ENABLE_PREFIX_DELEGATION`.
+
+The mechanism of how is this done is describe in [`this`](https://github.com/aws/amazon-vpc-cni-k8s/blob/master/docs/prefix-and-ip-target.md) article.
+
+After the `Amazon EKS` is created, the Workflow will execute the instructions in [`eks-infra`](/eks-infra/).
+
+Currently, the instructions in [`eks-infra`](/eks-infra/) are in `bash shell script` that calls `kubectl` command.
+
+A `GitHub Action` [`Action`](https://github.com/tsanghan/setup-kubectl-action) is specifically written to setup `kubectl` in the `GitHub-Hosted runner`.
+
+
+
+Workflow Diagram
+
