@@ -110,7 +110,7 @@ Fortunately, we can export the automatic dashboards in `Container Insights` menu
 
 `dashboard-apps` is the dashboard I created with 3 charts.
 
-With the above TF configuration setting and standing up an `EKS` cluster via `GitHub Workflow` (GitHub Workflow will be discussed in `Part 2`) and deploying `Google microservices-demo Online Boutique` (deployment of `Google microservices-demo Online Boutique` is via `Fluxcd` GitOps, will be discussed in `Part 2`)
+With the above TF configuration setting and standing up an `EKS` cluster via `GitHub Workflow` (GitHub Workflow will be discussed in `Part 2`) and deployment of `Google microservices-demo Online Boutique` (deployment of `Google microservices-demo Online Boutique` is via `Fluxcd` GitOps, will be discussed in `Part 2`) and allowing the included `loadgenerator` pod to have  time to generate requests, we will have sufficient logs data to generate our 3 custom charts.
 
 AWS CloudWatch will have the following resources created,
 
@@ -198,7 +198,7 @@ Log sample 2
 It seems that `FluentBit` will wrap an unified envelop log format in `json` around the various logs format collected from diverse applications.
 In both `Log sample 1` and `Log sample 2` the applications (`frontend` & `paymentservice`) log format are in `json`, however the salient content is the value in the `http.resp.status` key for `frontend` application and `message` key for `paymentservice` application.
 
-To extract the `http.resp.status` value, the following `Query` syntax was used.
+To extract the `http.resp.status` value, the following `Query` [syntax](/aws-infra/modules/dashboards/json/dashboard-apps.tftpl#L10) was used.
 
 ```
 SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields @message | filter @message like /frontend/ | filter @message like /http.resp.status/ | parse @message \"status\\\":*,\" as code | stats count(*) by code
@@ -206,7 +206,7 @@ SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields @message | fil
 
 The values collected (`stats count(*) by code`) are then visualized as `Pie` chart.
 
-For the `Transaction processed by Currency (Application Log)` and `Transaction Amount by Currency (Application Log)` the following `Query` syntax are used.
+For the [`Transaction processed by Currency (Application Log)`](/aws-infra/modules/dashboards/json/dashboard-apps.tftpl#L23) and [`Transaction Amount by Currency (Application Log)`](/aws-infra/modules/dashboards/json/dashboard-apps.tftpl#L36) the following `Query` syntax are used.
 
 ```
 SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields log_processed.message | filter log_processed.message like /Transaction processed/ | parse log_processed.message /Amount: (?<currency>[A-Z]{3}?)/ | stats count(*) by currency
