@@ -14,14 +14,6 @@ helm install cilium cilium/cilium --version 1.16.2 \
   --set egressMasqueradeInterfaces=eth0 \
   --set routingMode=native
 
-flux bootstrap github \
-  --token-auth \
-  --owner=tsanghan \
-  --repository=fleet-infra \
-  --branch=main \
-  --path=clusters/my-cluster \
-  --personal
-
 # kubectl create ns cert-manager --dry-run=client -oyaml | egrep -v "{}|null" | k apply -f -
 kubectl apply -f cert-manager/namespace.yaml
 kubectl wait --timeout=5m ns/cert-manager --for=jsonpath='{.status.phase}'=Active
@@ -56,6 +48,14 @@ kubectl apply -f envoygateway/gateway_envoyproxy.yaml
 kubectl apply -f external-dns/namespace.yaml
 kubectl wait --timeout=5m ns/external-dns --for=jsonpath='{.status.phase}'=Active
 envsubst < external-dns/flux-external-dns.tpl | kubectl apply -f -
+
+flux bootstrap github \
+  --token-auth \
+  --owner=tsanghan \
+  --repository=fleet-infra \
+  --branch=main \
+  --path=clusters/my-cluster \
+  --personal
 
 # helm repo add jetstack https://charts.jetstack.io --force-update
 # helm install \

@@ -53,17 +53,14 @@ jobs:
 
     - name: Show version
       run: |
-        # cd aws-infra
         tflint --version
 
     - name: Init TFLint
       run: |
-        # cd aws-infra
         tflint --init
 
     - name: Run TFLint
       run: |
-        # cd aws-infra
         tflint -f compact
 
     - name: Setup Tofu
@@ -74,24 +71,20 @@ jobs:
 
     - name: Tofu Init
       run: |
-        # cd aws-infra
         tofu init
 
     - name: Tofu Fmt
       run: |
-        # cd aws-infra
         tofu fmt --recursive -check
 
     - name: Tofu Validate
       run: |
-        # cd aws-infra
         tofu validate
 
     - name: Todu Plan
       env:
         TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
-        # cd aws-infra
         tofu plan
 
     - name: Run ShellCheck
@@ -102,6 +95,10 @@ jobs:
   Deployment:
     runs-on: ubuntu-latest
     needs: Intergration
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./aws-infra
     environment: ${{ github.ref_name }}
 
     steps:
@@ -151,17 +148,14 @@ jobs:
 
     # - name: Show version
     #   run: |
-    #     cd aws-infra
     #     tflint --version
 
     # - name: Init TFLint
     #   run: |
-    #     cd aws-infra
     #     tflint --init
 
     # - name: Run TFLint
     #   run: |
-    #     cd aws-infra
     #     tflint -f compact
 
     - name: Setup Tofu
@@ -172,43 +166,37 @@ jobs:
 
     - name: Tofu Init
       run: |
-        # cd aws-infra
         tofu init
-      working-directory: ./aws-infra
+      # working-directory: ./aws-infra
 
     # - name: Tofu Fmt
     #   run: |
-    #     cd aws-infra
     #     tofu fmt --recursive -check
 
     # - name: Tofu Validate
     #   run: |
-    #     cd aws-infra
     #     tofu validate
 
     - name: Tofu Plan
       env:
         TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
-        # cd aws-infra
         tofu plan
-      working-directory: ./aws-infra
+      # working-directory: ./aws-infra
 
     - name: Tofu Apply
       env:
         TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
-        # cd aws-infra
         tofu apply -auto-approve
-      working-directory: ./aws-infra
+      # working-directory: ./aws-infra
 
     - name: Extract ARNs
       id: info
       run: |
-        # cd aws-infra
         echo "CERT_MANAGER_ROLE_ARN=$(tofu output -json | jq -r '.cert_manager_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
         echo "EXTERNAL_DNS_ROLE_ARN=$(tofu output -json | jq -r '.external_dns_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
-      working-directory: ./aws-infra
+      # working-directory: ./aws-infra
 
     - name: Kubectl & Flux
       env:
@@ -224,7 +212,6 @@ jobs:
         echo "$EXTERNAL_DNS_ROLE_ARN"
         echo "$ENVIRONMENT"
         echo "$ACME_SERVER"
-        # cd eks-infra
         kubectl get po -A
         bash eks-infra.sh
       working-directory: ./eks-infra

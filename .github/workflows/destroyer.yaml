@@ -14,6 +14,10 @@ permissions:
 jobs:
   Destroy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./aws-infra
 
     steps:
     - name: Checkout
@@ -44,6 +48,9 @@ jobs:
                 echo $(kubectl -n demoapp-gw get gateway -o=name) | xargs -I% kubectl delete -n demoapp-gw %
                 sleep 15
             fi
+            exit 0
+        else
+          exit 1
         fi
 
     - name: Setup Tofu
@@ -54,14 +61,14 @@ jobs:
 
     - name: Tofu Init
       run: |
-        cd aws-infra
+        # cd aws-infra
         tofu init
 
     - name: Tofu Destroy
       env:
         TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
-        cd aws-infra
+        # cd aws-infra
         tofu state rm 'module.make_eks.module.eks.aws_eks_addon.this["amazon-cloudwatch-observability"]'
         tofu state rm 'module.make_eks.module.eks.aws_eks_addon.before_compute["vpc-cni"]'
         tofu destroy -auto-approve
