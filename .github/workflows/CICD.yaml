@@ -18,6 +18,10 @@ permissions:
 jobs:
   Intergration:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./aws-infra
     environment: ${{ github.ref_name }}
 
     steps:
@@ -40,7 +44,7 @@ jobs:
 
     - name: STS Get-Caller-Identity
       run: |
-          aws sts get-caller-identity
+        aws sts get-caller-identity
 
     - name: Setup TFLint
       uses: terraform-linters/setup-tflint@v4
@@ -49,17 +53,14 @@ jobs:
 
     - name: Show version
       run: |
-        cd aws-infra
         tflint --version
 
     - name: Init TFLint
       run: |
-        cd aws-infra
         tflint --init
 
     - name: Run TFLint
       run: |
-        cd aws-infra
         tflint -f compact
 
     - name: Setup Tofu
@@ -70,24 +71,20 @@ jobs:
 
     - name: Tofu Init
       run: |
-        cd aws-infra
         tofu init
 
     - name: Tofu Fmt
       run: |
-        cd aws-infra
         tofu fmt --recursive -check
 
     - name: Tofu Validate
       run: |
-        cd aws-infra
         tofu validate
 
     - name: Todu Plan
       env:
         TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
-        cd aws-infra
         tofu plan
 
     - name: Run ShellCheck
@@ -98,6 +95,10 @@ jobs:
   Deployment:
     runs-on: ubuntu-latest
     needs: Intergration
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./aws-infra
     environment: ${{ github.ref_name }}
 
     steps:
@@ -126,7 +127,7 @@ jobs:
 
     - uses: azure/setup-helm@v4.2.0
       with:
-          version: '3.15.3'
+        version: '3.15.3'
       id: install
 
     - name: Configure AWS credentials
@@ -138,7 +139,7 @@ jobs:
 
     - name: STS Get-Caller-Identity
       run: |
-          aws sts get-caller-identity
+        aws sts get-caller-identity
 
     # - name: Setup TFLint
     #   uses: terraform-linters/setup-tflint@v4
@@ -147,17 +148,14 @@ jobs:
 
     # - name: Show version
     #   run: |
-    #     cd aws-infra
     #     tflint --version
 
     # - name: Init TFLint
     #   run: |
-    #     cd aws-infra
     #     tflint --init
 
     # - name: Run TFLint
     #   run: |
-    #     cd aws-infra
     #     tflint -f compact
 
     - name: Setup Tofu
@@ -168,37 +166,32 @@ jobs:
 
     - name: Tofu Init
       run: |
-        cd aws-infra
         tofu init
+      # working-directory: ./aws-infra
 
     # - name: Tofu Fmt
     #   run: |
-    #     cd aws-infra
     #     tofu fmt --recursive -check
 
     # - name: Tofu Validate
     #   run: |
-    #     cd aws-infra
     #     tofu validate
 
     - name: Tofu Plan
       env:
         TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
-        cd aws-infra
         tofu plan
 
     - name: Tofu Apply
       env:
         TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
-        cd aws-infra
         tofu apply -auto-approve
 
-    - name: Extract ARNs
+    - name: Extract IRSA ARNs
       id: info
       run: |
-        cd aws-infra
         echo "CERT_MANAGER_ROLE_ARN=$(tofu output -json | jq -r '.cert_manager_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
         echo "EXTERNAL_DNS_ROLE_ARN=$(tofu output -json | jq -r '.external_dns_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
 
@@ -216,8 +209,8 @@ jobs:
         echo "$EXTERNAL_DNS_ROLE_ARN"
         echo "$ENVIRONMENT"
         echo "$ACME_SERVER"
-        cd eks-infra
         kubectl get po -A
         bash eks-infra.sh
+      working-directory: ./eks-infra
 
 
