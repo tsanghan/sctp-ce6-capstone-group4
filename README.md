@@ -290,8 +290,8 @@ The following is example output for instance type `t3`.
 
 With the results of the table above, we can see that even for instance type `t3.2xlarge` the maximum Pods per Node is `59 (15 * 4 - 1)` much lesser then the Kubernetes defined thresholds for Pods.[^2] [^3].
 
-[^2]: kubernetes.io/docs/setup/best-practices/cluster-large/
-[^3]: https://github.com/kubernetes/community/blob/master/sig-scalability/configs-and-limits/thresholds.md
+[^2]: [Considerations for large clusters](https://kubernetes.io/docs/setup/best-practices/cluster-large/)
+[^3]: [Kubernetes Scalability thresholds](https://github.com/kubernetes/community/blob/master/sig-scalability/configs-and-limits/thresholds.md)
 
 The `VPC-CNI` configuration key to enable `more IP addresses to Amazon EKS nodes with prefixes` is `ENABLE_PREFIX_DELEGATION`.
 
