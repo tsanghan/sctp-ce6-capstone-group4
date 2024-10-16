@@ -182,21 +182,18 @@ jobs:
         TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
         tofu plan
-      # working-directory: ./aws-infra
 
     - name: Tofu Apply
       env:
         TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
         tofu apply -auto-approve
-      # working-directory: ./aws-infra
 
-    - name: Extract ARNs
+    - name: Extract IRSA ARNs
       id: info
       run: |
         echo "CERT_MANAGER_ROLE_ARN=$(tofu output -json | jq -r '.cert_manager_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
         echo "EXTERNAL_DNS_ROLE_ARN=$(tofu output -json | jq -r '.external_dns_irsa_iam_role_arn.value')" >> "$GITHUB_OUTPUT"
-      # working-directory: ./aws-infra
 
     - name: Kubectl & Flux
       env:
