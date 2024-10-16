@@ -167,7 +167,6 @@ jobs:
     - name: Tofu Init
       run: |
         tofu init
-      # working-directory: ./aws-infra
 
     # - name: Tofu Fmt
     #   run: |

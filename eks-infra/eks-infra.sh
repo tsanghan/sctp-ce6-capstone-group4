@@ -57,14 +57,6 @@ kubectl apply -f external-dns/namespace.yaml
 kubectl wait --timeout=5m ns/external-dns --for=jsonpath='{.status.phase}'=Active
 envsubst < external-dns/flux-external-dns.tpl | kubectl apply -f -
 
-flux bootstrap github \
-  --token-auth \
-  --owner=tsanghan \
-  --repository=fleet-infra \
-  --branch=main \
-  --path=clusters/my-cluster \
-  --personal
-
 # helm repo add jetstack https://charts.jetstack.io --force-update
 # helm install \
 #   cert-manager jetstack/cert-manager \
