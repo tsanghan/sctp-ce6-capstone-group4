@@ -11,7 +11,7 @@ spec:
     server: ${ACME_SERVER}
     email: tsanghan@gmail.com
     privateKeySecretRef:
-      name: letsencrypt-staging
+      name: letsencrypt-${ENVIRONMENT}
     solvers:
     - dns01:
         route53:

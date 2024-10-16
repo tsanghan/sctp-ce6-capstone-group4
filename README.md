@@ -295,7 +295,7 @@ With the results of the table above, we can see that even for instance type `t3.
 
 The `VPC-CNI` configuration key to enable `more IP addresses to Amazon EKS nodes with prefixes` is `ENABLE_PREFIX_DELEGATION`.
 
-The mechanism of how is this done is describe in [`this`](https://github.com/aws/amazon-vpc-cni-k8s/blob/master/docs/prefix-and-ip-target.md) article.
+The mechanism of how is this achieve is describe in [`this`](https://github.com/aws/amazon-vpc-cni-k8s/blob/master/docs/prefix-and-ip-target.md) article.
 
 After the `Amazon EKS` is created, the Workflow will execute the instructions in [`eks-infra`](/eks-infra/).
 
