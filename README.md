@@ -32,23 +32,23 @@ This report will be in 2 parts, `Part 1` will be describing the steps and mechan
 
 ## Part 1
 
-The Architecture Diagram is show below.
+The Architecture Diagram is shown below.
 
 ![Architecture Diagram](/assets/images/sctp-ce6-capstone.png)
 
-`Amazon Elastic Kubernetes Service (Amazon EKS)` has been chosen to be the container orchestration platform.
+`Amazon Elastic Kubernetes Service (Amazon EKS)` is chosen to be the container orchestration platform.
 
 We will be using `AWS CloudWatch` service for centralized logging solution.
 
 `Application Monitoring Dashboard` will be created within `AWS CloudWatch` service as a requirement for the capstone projects.
 
-We will be using Google microservices-demo `Online Boutique` as containerized application to be deployed into our `EKS` platform.
+For application, We deploy Google microservices-demo `Online Boutique` as containerized application into `EKS` platform.
 
 Google microservices-demo GitHub repository is at `https://github.com/GoogleCloudPlatform/microservices-demo`
 
-The `deployment` of `EKS` is via `OpenTofu` with `main.tf` configuration file in [`aws-infra/`](/aws-infra/)
+The `deployment` of `EKS` is by `OpenTofu` with `main.tf` configuration file in [`aws-infra/`](/aws-infra/)
 
-Creation of `vpc` to house the `EKS` worker nodes is via `vpc.tf` file.
+Creation of `vpc` to house the `EKS` worker nodes is in `vpc.tf` file.
 
 The configuration/logic of `EKS` cluster/control-plane, managed-node-groups, dashboards & alarms are further abstracted into various TF configuration files located in [`aws-infra/modules/`](/aws-infra/modules/)
 
@@ -66,7 +66,7 @@ The following command will be handy to get the available configuration schema fo
 aws eks describe-addon-configuration --addon-name <add-on name> --addon-version  <add-on version> | yq '.configurationSchema' | yq -P | less
 ```
 
-Add-ons version can be retrieved via the following command,
+Add-ons version can be retrieved using the following command,
 
 ```bash
 aws eks describe-addon-versions --addon-name <add-on name> | less
@@ -74,36 +74,54 @@ aws eks describe-addon-versions --addon-name <add-on name> | less
 
 *Note: I have `AWS_DEFAULT_OUTPUT=yaml` in my environment.*
 
-Item #1 above will turn on all Kubernetes systems/cluster logs and sent to `Amazon CloudWatch` service and into a `Log Group` with name
-* `/aws/eks/<Cluster_Name>/cluster`
+Item #1 above will turn on all Kubernetes systems/cluster logs and sent to `Amazon CloudWatch` service and into a `Log Group` with name `/aws/eks/<Cluster_Name>/cluster`
 
-### Centralized Logging & Dashboard
+### Centralized Logging
 
-Item #2 above will deploy `amazon-cloudwatch-observability` add-on, which consists of `FluentBit` DaemonSet that will collect Application Logs from `kubelet`[^1] and sent the logs to `Amazon CloudWatch`. The Log Groups create are as follow,
+Item #2 above will deploy `amazon-cloudwatch-observability` add-on, which consists of `FluentBit` DaemonSet that will collect Application Logs from `kubelet`[^1] and sent logs to `Amazon CloudWatch`. The Log Groups create are as follow,
 * `/aws/containerinsights/<Cluster_Name>/application`
 * `/aws/containerinsights/<Cluster_Name>/performance`
 * `/aws/containerinsights/<Cluster_Name>/dataplane`
 
 [^1]: [How nodes handle container logs](https://kubernetes.io/docs/concepts/cluster-administration/logging/#how-nodes-handle-container-logs)
 
-`FluentBit` will requires an identity to authenticate and to have the authorization to make AWS API calls to `Amazon CloudWatch` service for sending Application Logs.
-The mechanism for authentication and authorization for a Kubernetes Pod to make AWS API calls to an AWS Service is via `IAM Roles for Service Account`.
+`FluentBit` will requires an identity to authenticate and authorization to make AWS API calls to `Amazon CloudWatch` service for sending Application Logs.
+The mechanism for authentication and authorization for a Kubernetes Pod to make AWS API calls to an AWS Service is `IAM Roles for Service Account`.
 
 Steps in creating an `IRSA` are as follow,
 1) [Create an IAM OIDC provider for your cluster](https://docs.aws.amazon.com/eks/latest/userguide/enable-iam-roles-for-service-accounts.html)
 2) [Assign IAM roles to Kubernetes service accounts](https://docs.aws.amazon.com/eks/latest/userguide/associate-service-account-role.html)
 3) Annotate a Kubernetes Service Account with the `IAM Role` and configure this Service Account for Pods.
 
-However, in utilizing [`module "eks"`](/aws-infra/modules/make_eks/main.tf#L20), the above process are done automatically, all we need to supply as a variable to `module "eks"` is a [`Role ARN`](/aws-infra/modules/make_eks/main.tf#L1) resource to variable named [`service_account_role_arn`](/aws-infra/modules/make_eks/main.tf#L43) in [`amazon-cloudwatch-observability`](/aws-infra/modules/make_eks/main.tf#L42) add-on.
+However, in utilizing [`module "eks"`](/aws-infra/modules/make_eks/main.tf#L20), the above process are done automatically, all we need to supply as a variable to `module "eks"` is a [`Role ARN`](/aws-infra/modules/make_eks/main.tf#L1) resource to a variable named [`service_account_role_arn`](/aws-infra/modules/make_eks/main.tf#L43) in [`amazon-cloudwatch-observability`](/aws-infra/modules/make_eks/main.tf#L42) add-on.
+
+### Dashboard
 
 The `dashboards` TF configuration for `CloudWatch` is in the file [/aws-infra/modules/dashboards/main.tf](/aws-infra/modules/dashboards/main.tf)
-4 dashboards are created for the Capstone Project. They are as follows,
+4 dashboards are created for this Capstone Project. They are as follows,
 1) <Cluster_Name>-dashboard-apps
 2) <Cluster_Name>-dashboard-container-insights
 3) <Cluster_Name>-dashboard-performance-monitoring
 4) <Cluster_Name>-dashboard-systems
 
-`dashboard-container-insights` and `dashboard-performance-monitoring` are `CloudWatch automatic dashboards`, dashboards that is created when `.agent.config.logs.metrics_collected.kubernetes.enhanced_container_insights` is set to boolean value `true`.
+`dashboard-container-insights` and `dashboard-performance-monitoring` are `CloudWatch automatic dashboards`, dashboards that is created when [`.agent.config.logs.metrics_collected.kubernetes.enhanced_container_insights`](/aws-infra/modules/make_eks/json/amazon-cloudwatch-observability.json#L8) is set to boolean value `true`.
+
+```json
+{
+  "agent": {
+    "config": {
+      "logs": {
+        "metrics_collected": {
+          "application_signals": {},
+          "kubernetes": {
+            "enhanced_container_insights": true
+          }
+        }
+      }
+    }
+  }
+}
+```
 
 However, the `CloudWatch automatic dashboards` reside in the `AWS CloudWatch Console` under the `Container Insights` menu and not in my custom Dashboard.
 Fortunately, we can export the automatic dashboards in `Container Insights` menu as `json` configuration. I then import the automatic dashboards `json` configuration into my [`/aws-infra/modules/dashboards/main.tf`](/aws-infra/modules/dashboards/main.tf) TF configuration file.
@@ -112,7 +130,7 @@ Fortunately, we can export the automatic dashboards in `Container Insights` menu
 
 `dashboard-apps` is the dashboard I created with 3 charts.
 
-With the above TF configuration setting and standing up an `EKS` cluster via `GitHub Workflow` (GitHub Workflow will be discussed in `Part 2`) and deployment of `Google microservices-demo Online Boutique` (deployment of `Google microservices-demo Online Boutique` is via `Fluxcd` GitOps, will be discussed in `Part 2`) and allowing the included `loadgenerator` pod to have  time to generate requests, we will have sufficient logs data to generate our 3 custom charts show below.
+With the above TF configuration setting and standing up an `EKS` cluster with `GitHub Workflow` (GitHub Workflow will be discussed in `Part 2`) and deployment of `Google microservices-demo Online Boutique` (deployment of `Google microservices-demo Online Boutique` is by `Fluxcd` GitOps, will be discussed in `Part 2`) and allowing the included `loadgenerator` pod to have time to generate requests, we will have sufficient logs data to generate our 3 custom charts show below.
 
 AWS CloudWatch will also have the following resources created,
 
@@ -218,7 +236,7 @@ SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields log_processed.
 SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields log_processed.message | filter log_processed.message like /Transaction processed/ | parse log_processed.message /Amount: (?<currency>[A-Z]{3}?)(?<amount>[0-9.]{10,13}?)/ | stats sum(amount) by currency
 ```
 
-Both query looks similar, both utilizing `CloudWatch regex` language syntax (`/Amount: (?<currency>[A-Z]{3}?)/`) where `(?...?)` is a `named capture group` with the name being specified within `<...>` and `[A-Z]{3}` is the `regex` syntax for matching `currency code` while `(?<amount>[0-9.]{10,13}?)` capture the `currency amount`.
+Both query looks similar, both utilizing `CloudWatch regex` language syntax. The `regex` (`/Amount: (?<currency>[A-Z]{3}?)/`) where `(?...?)` is a `named capture group` with the name being specified within `<...>` and `[A-Z]{3}` is the syntax for matching `currency code` while `(?<amount>[0-9.]{10,13}?)` capture the `currency amount` into named capture group `amount`.
 The statistics calculation also differ by one using `count(*)` and another using `sum(*)`, thus yielding 2 different bar charts.
 
 ### Improvement
