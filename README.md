@@ -290,7 +290,7 @@ This is for costing reason and also not a requirement for the Capstone Project.
 
 There are also 2 GitHub Action `Environment`, namely `main` and `dev` for the Workflow to run in.
 
-There is no different in the workflow for `main` and `dev` branches, the deployed `EKS cluster` are identical (even thought they could be set up differently with varied parameters), except for the deployment of `cert-manager` (`cert-manager` will be discuss below) which for `dev` branch will utilize `Let's Encrypt Staging CA` while the `main` branch will enable `cert-manager` to use `Let's Encrypt Production CA`.
+There is no different in the workflow for `main` and `dev` branches, the deployed `EKS cluster` are identical (even thought they could be set up differently with varied parameters), except for the deployment of `cert-manager` which for `dev` branch will utilize `Let's Encrypt Staging CA` while the `main` branch will enable `cert-manager` to use `Let's Encrypt Production CA`.
 
 The `switch` between `Staging CA` and `Production CA` are store in the GitHub Action `Environment Variable` `ENVIRONMENT` with value of `staging` for `dev` branch and value of `production` for the `main` branch.
 
