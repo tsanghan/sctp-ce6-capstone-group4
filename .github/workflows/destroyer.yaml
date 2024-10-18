@@ -21,7 +21,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install kubectl
       uses: tsanghan/setup-kubectl-action@main
@@ -34,7 +34,7 @@ jobs:
         version: '4.44.3'
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4.0.2
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: ${{ vars.AWS_REGION }}
         role-to-assume: ${{ vars.ROLE_TO_ASSUME }}
@@ -66,14 +66,12 @@ jobs:
 
     - name: Tofu Init
       run: |
-        # cd aws-infra
         tofu init
 
     - name: Tofu Destroy
       env:
         TF_VAR_MYIP: ${{ vars.TF_VAR_MYIP }}
       run: |
-        # cd aws-infra
         tofu state rm 'module.make_eks.module.eks.aws_eks_addon.this["amazon-cloudwatch-observability"]'
         tofu state rm 'module.make_eks.module.eks.aws_eks_addon.before_compute["vpc-cni"]'
         tofu destroy -auto-approve

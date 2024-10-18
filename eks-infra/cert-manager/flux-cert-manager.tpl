@@ -20,7 +20,7 @@ spec:
   chart:
     spec:
       chart: cert-manager
-      version: 'v1.15.3'
+      version: 'v1.16.1'
       sourceRef:
         kind: HelmRepository
         name: cert-manager

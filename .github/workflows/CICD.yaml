@@ -8,7 +8,6 @@ on:
     paths-ignore:
       - '**/**.md'
       - '**/**.png'
-      - '**/**.PNG'
 
 permissions:
   id-token: write
@@ -36,7 +35,7 @@ jobs:
     #     output_file_path: console
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4.0.2
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: ${{ vars.AWS_REGION }}
         role-to-assume: ${{ vars.ROLE_TO_ASSUME }}
@@ -120,18 +119,18 @@ jobs:
     - name: Setup Flux CLI
       uses: fluxcd/flux2/action@main
       with:
-        version: 'latest'
+        version: '2.4.0'
 
     # - name: Run Flux CLI
     #   run: flux version --client
 
-    - uses: azure/setup-helm@v4.2.0
+    - uses: azure/setup-helm@v4
       with:
         version: '3.15.3'
       id: install
 
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4.0.2
+      uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: ${{ vars.AWS_REGION }}
         role-to-assume: ${{ vars.ROLE_TO_ASSUME }}
