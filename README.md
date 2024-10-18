@@ -95,10 +95,18 @@ Steps in creating an `IRSA` are as follow,
 
 However, in utilizing [`module "eks"`](/aws-infra/modules/make_eks/main.tf#L20), the above process are done automatically, all we need to supply as a variable to `module "eks"` is a [`Role ARN`](/aws-infra/modules/make_eks/main.tf#L1) resource to a variable named [`service_account_role_arn`](/aws-infra/modules/make_eks/main.tf#L43) in [`amazon-cloudwatch-observability`](/aws-infra/modules/make_eks/main.tf#L42) add-on.
 
+### Log flows
+
+Please see diagram below to see how the application logs flows to AWS CloudWatch.
+
+![Log Flows Diagram](/assets/images/sctp-ce6-capstone-log-flow.png)
+
 ### Dashboard
 
 The `dashboards` TF configuration for `CloudWatch` is in the file [/aws-infra/modules/dashboards/main.tf](/aws-infra/modules/dashboards/main.tf)
-4 dashboards are created for this Capstone Project. They are as follows,
+4 dashboards are created for this Capstone Project.
+
+They are as follows,
 1) <Cluster_Name>-dashboard-apps
 2) <Cluster_Name>-dashboard-container-insights
 3) <Cluster_Name>-dashboard-performance-monitoring
@@ -249,7 +257,7 @@ The statistics calculation also differ by one using `count(*)` and another using
 
 Extra! Extra!
 
-![Extra! Extra!](/assets/images/News-Boy-Image-GraphicsFairy-768x780.jpg)[^42
+![Extra! Extra!](/assets/images/News-Boy-Image-GraphicsFairy-768x780.jpg)[^2]
 [^2]: [Image Terms & Copyright](https://thegraphicsfairy.com/terms-copyright/)
 
 To have a `feel` of a `complete` project, I have implemented the following extra requirements,
@@ -260,7 +268,9 @@ To have a `feel` of a `complete` project, I have implemented the following extra
 3) Redirect HTTP request to `cymbal.sctp-sandbox.com:80` to `cymbal.sctp-sandbox.com:443` using #2.
 4) Deploy [`Cert-Manager`](https://cert-manager.io/) for automatic TLS certificate requests to [`Lets' Encrypt`](https://letsencrypt.org/)
 5) Deploy [`External DNS`](https://kubernetes-sigs.github.io/external-dns/latest/) such that an `A Record` with `Subject Alternative Name (SAN) FQDN` will automatically be populated into [`AWS Route53`](https://aws.amazon.com/route53/) service.
-6) With #1, #2, #3 & #4 above, we can achieve a TLS Certificate rating of `A+` from [`Qualys SSL Labs`](https://www.ssllabs.com/ssltest/)
+6) With #1, #2, #3 & #4 above, we can achieve a TLS Certificate rating of `A+` from [`Qualys SSL Labs`](https://www.ssllabs.com/ssltest/) as shown below.
+
+![Qualys SSL Labs Server Test](/assets/images/cymbal-tls-ssllab-A-plus-2.png)
 
 The following table highlight the extra add-ons version that is deployed.
 
@@ -374,3 +384,9 @@ As a picture is worth a `Thousands Words` please refer to the diagram below to s
 
 ![Workflow Diagram](/assets/images/Workflow.png)
 
+### Improvement
+1) Turn on Cilium CNI's
+    1) `ebpf` networking - [kube-proxy replacement](https://cilium.io/use-cases/kube-proxy/)
+    2) build in `Gateway-API` [implementation](https://docs.cilium.io/en/latest/network/servicemesh/gateway-api/gateway-api/)
+2) Deploy and test [`AWS EKS Pod Identity Agent`](https://docs.aws.amazon.com/eks/latest/userguide/pod-id-how-it-works.html)
+3) Deploy and test [`AWS Secrets Manager and Config Provider for Secret Store CSI Driver`](https://github.com/aws/secrets-store-csi-driver-provider-aws)
