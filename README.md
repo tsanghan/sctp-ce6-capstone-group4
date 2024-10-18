@@ -249,7 +249,8 @@ The statistics calculation also differ by one using `count(*)` and another using
 
 Extra! Extra!
 
-![Extra! Extra!](/assets/images/News-Boy-Image-GraphicsFairy-768x780.jpg)[^4]: https://thegraphicsfairy.com/terms-copyright/
+![Extra! Extra!](/assets/images/News-Boy-Image-GraphicsFairy-768x780.jpg)
+[^4]: [Image Terms & Copyright](https://thegraphicsfairy.com/terms-copyright/)
 
 To have a `feel` of a `complete` project, I have implemented the following extra requirements,
 1) Deploy `Google microservices demo application` via `GitOps` using `FluxCD`.
