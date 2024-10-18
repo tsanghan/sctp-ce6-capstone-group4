@@ -249,8 +249,8 @@ The statistics calculation also differ by one using `count(*)` and another using
 
 Extra! Extra!
 
-![Extra! Extra!](/assets/images/News-Boy-Image-GraphicsFairy-768x780.jpg)[^4]
-[^4]: [Image Terms & Copyright](https://thegraphicsfairy.com/terms-copyright/)
+![Extra! Extra!](/assets/images/News-Boy-Image-GraphicsFairy-768x780.jpg)[^42
+[^2]: [Image Terms & Copyright](https://thegraphicsfairy.com/terms-copyright/)
 
 To have a `feel` of a `complete` project, I have implemented the following extra requirements,
 1) Deploy `Google microservices demo application` via `GitOps` using `FluxCD`.
@@ -340,10 +340,10 @@ The following is example output for instance type `t3`.
 +----------+----------+--------------+
 ```
 
-With the results of the table above, we can see that even for instance type `t3.2xlarge` the maximum Pods per Node is `59 (15 * 4 - 1)` much lesser then the Kubernetes defined thresholds for Pods.[^2] [^3].
+With the results of the table above, we can see that even for instance type `t3.2xlarge` the maximum Pods per Node is `59 (15 * 4 - 1)` much lesser then the Kubernetes defined thresholds for Pods.[^3] [^4].
 
-[^2]: [Considerations for large clusters](https://kubernetes.io/docs/setup/best-practices/cluster-large/)
-[^3]: [Kubernetes Scalability thresholds](https://github.com/kubernetes/community/blob/master/sig-scalability/configs-and-limits/thresholds.md)
+[^3]: [Considerations for large clusters](https://kubernetes.io/docs/setup/best-practices/cluster-large/)
+[^4]: [Kubernetes Scalability thresholds](https://github.com/kubernetes/community/blob/master/sig-scalability/configs-and-limits/thresholds.md)
 
 The `VPC-CNI` configuration key to enable `more IP addresses to Amazon EKS nodes with prefixes` is `ENABLE_PREFIX_DELEGATION`.
 
