@@ -95,10 +95,18 @@ Steps in creating an `IRSA` are as follow,
 
 However, in utilizing [`module "eks"`](/aws-infra/modules/make_eks/main.tf#L20), the above process are done automatically, all we need to supply as a variable to `module "eks"` is a [`Role ARN`](/aws-infra/modules/make_eks/main.tf#L1) resource to a variable named [`service_account_role_arn`](/aws-infra/modules/make_eks/main.tf#L43) in [`amazon-cloudwatch-observability`](/aws-infra/modules/make_eks/main.tf#L42) add-on.
 
+### Log flows
+
+Please see diagram below to see how the application logs flows to AWS CloudWatch.
+
+![Log Flows Diagram](/assets/images/sctp-ce6-capstone-log-flow.png)
+
 ### Dashboard
 
 The `dashboards` TF configuration for `CloudWatch` is in the file [/aws-infra/modules/dashboards/main.tf](/aws-infra/modules/dashboards/main.tf)
-4 dashboards are created for this Capstone Project. They are as follows,
+4 dashboards are created for this Capstone Project.
+
+They are as follows,
 1) <Cluster_Name>-dashboard-apps
 2) <Cluster_Name>-dashboard-container-insights
 3) <Cluster_Name>-dashboard-performance-monitoring
