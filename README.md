@@ -376,3 +376,9 @@ As a picture is worth a `Thousands Words` please refer to the diagram below to s
 
 ![Workflow Diagram](/assets/images/Workflow.png)
 
+### Improvement
+1) Turn on Cilium CNI's
+    1) `ebpf` networking - [kube-proxy replacement](https://cilium.io/use-cases/kube-proxy/)
+    2) build in `Gateway-API` [implementation](https://docs.cilium.io/en/latest/network/servicemesh/gateway-api/gateway-api/)
+2) Deploy and test [`AWS EKS Pod Identity Agent`](https://docs.aws.amazon.com/eks/latest/userguide/pod-id-how-it-works.html)
+3) Deploy and test [`AWS Secrets Manager and Config Provider for Secret Store CSI Driver`](https://github.com/aws/secrets-store-csi-driver-provider-aws)
