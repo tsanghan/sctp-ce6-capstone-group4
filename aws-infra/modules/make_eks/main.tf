@@ -26,7 +26,7 @@ module "eks" {
   cluster_endpoint_public_access           = true
   enable_cluster_creator_admin_permissions = true
   cluster_endpoint_public_access_cidrs     = var.cluster_endpoint_public_access_cidrs
-  dataplane_wait_duration                  = "240s"
+  dataplane_wait_duration                  = "300s"
 
 
   cluster_enabled_log_types = ["audit", "api", "authenticator", "controllerManager", "scheduler"]
