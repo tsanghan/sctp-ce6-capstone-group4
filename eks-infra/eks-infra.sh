@@ -14,13 +14,13 @@ helm install cilium cilium/cilium --version 1.16.3 \
   --set egressMasqueradeInterfaces=eth0 \
   --set routingMode=native
 
-# flux bootstrap github \
-#   --token-auth \
-#   --owner=tsanghan \
-#   --repository=fleet-infra \
-#   --branch=main \
-#   --path=clusters/my-cluster \
-#   --personal
+flux bootstrap github \
+  --token-auth \
+  --owner=tsanghan \
+  --repository=fleet-infra \
+  --branch=main \
+  --path=clusters/my-cluster \
+  --personal
 
 # kubectl create ns cert-manager --dry-run=client -oyaml | egrep -v "{}|null" | k apply -f -
 kubectl apply -f cert-manager/namespace.yaml
@@ -39,14 +39,6 @@ while [ "$(kubectl -n cert-manager get deployment/cert-manager-webhook 2> /dev/n
 done
 kubectl wait --timeout=10m -n cert-manager deployment/cert-manager-webhook --for=condition=Available
 envsubst < cert-manager/cluster-issuer.tpl | kubectl apply -f -
-
-flux bootstrap github \
-  --token-auth \
-  --owner=tsanghan \
-  --repository=fleet-infra \
-  --branch=main \
-  --path=clusters/my-cluster \
-  --personal
 
 #kubectl create ns envoy-gateway-system --dry-run=client -oyaml | egrep -v "{}|null" | k apply -f -
 kubectl apply -f envoygateway/namespace.yaml

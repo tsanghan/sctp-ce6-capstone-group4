@@ -77,6 +77,8 @@ aws eks describe-addon-versions --addon-name <add-on name> | less
 Item #1 above will turn on all Kubernetes systems/cluster logs and sent to `Amazon CloudWatch` service and into a `Log Group` with name
 * `/aws/eks/<Cluster_Name>/cluster`
 
+### Centralized Logging & Dashboard
+
 Item #2 above will deploy `amazon-cloudwatch-observability` add-on, which consists of `FluentBit` DaemonSet that will collect Application Logs from `kubelet`[^1] and sent the logs to `Amazon CloudWatch`. The Log Groups create are as follow,
 * `/aws/containerinsights/<Cluster_Name>/application`
 * `/aws/containerinsights/<Cluster_Name>/performance`
@@ -219,6 +221,12 @@ SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields log_processed.
 Both query looks similar, both utilizing `CloudWatch regex` language syntax (`/Amount: (?<currency>[A-Z]{3}?)/`) where `(?...?)` is a `named capture group` with the name being specified within `<...>` and `[A-Z]{3}` is the `regex` syntax for matching `currency code` while `(?<amount>[0-9.]{10,13}?)` capture the `currency amount`.
 The statistics calculation also differ by one using `count(*)` and another using `sum(*)`, thus yielding 2 different bar charts.
 
+### Improvement
+
+1) Till today I am not able to find an `AWS API` that will migrate `CloudWatch automatic dashboards` that reside in the `AWS CloudWatch Console` to be included in my `custom dashboard`. Hence, the utilization of the method of extracting `json` representation of `CloudWatch automatic dashboards` and recreation into my `custom dashboard` via `OpenTofu` `resource "aws_cloudwatch_dashboard"`.
+2) Creation/Re-creation of `EKS FluentBit Log Groups` with a finite retention period, not the default of `Never expires` log retention configuration.
+3) More abstraction of data and values from OpenTofu configuration files into GitHub repo level or environment level `Variable` or `Secrets`, i.e. `EKS Cluster Name`
+
 ## Part 2
 
 Extra! Extra!
@@ -327,7 +335,22 @@ Currently, the instructions in [`eks-infra`](/eks-infra/) are in `bash shell scr
 
 A `GitHub Action` [`Action`](https://github.com/tsanghan/setup-kubectl-action) is specifically written to setup `kubectl` in the `GitHub-Hosted runner`.
 
+As a picture is worth a `Thousands Words` please refer to the diagram below to see the deployment workflow with respect to `AWS API` calls for `AWS resources`, `Kubernetes API` calls with respect to `Kubernetes resources` and GitOps pull operations from `3 extra GitHub repositories`,
+1) [`fleet-infra`](https://github.com/tsanghan/fleet-infra)
+    1) This contains `FluxCD` resource manifests for referencing the following 2 other GitHub repositories
+2) [`cymbal-demo-apps-support`](https://github.com/tsanghan/cymbal-demo-apps-support)
+    1) This contains `support` manifests for
+        1) Certificate (for the application `SAN` of `cymbal.sctp-sandbox.com`)
+        2) Gateway (allowing `Ingress Traffic` into the application)
+        3) Namespace (for deployment these application support resources)
+3) [`cymbal-demo-apps`](https://github.com/tsanghan/cymbal-demo-apps)
+    1) This contains the manifest for the Google microservices demo application
+    2) With `Kustomization` that enables
+        1) `cymbal` branding
+        2) `Network Policies` for the application Pods
+        3) `non-public-frontend` (as we are using `Gateway API` for `Ingress Traffic`)
 
+### Workflow Diagram
 
-Workflow Diagram
+![Workflow Diagram](/assets/images/Workflow.svg)
 
