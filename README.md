@@ -249,7 +249,7 @@ The statistics calculation also differ by one using `count(*)` and another using
 
 Extra! Extra!
 
-![Extra! Extra!](/assets/images/News-Boy-Image-GraphicsFairy-768x780.jpg)[^42
+![Extra! Extra!](/assets/images/News-Boy-Image-GraphicsFairy-768x780.jpg)[^2]
 [^2]: [Image Terms & Copyright](https://thegraphicsfairy.com/terms-copyright/)
 
 To have a `feel` of a `complete` project, I have implemented the following extra requirements,
