@@ -235,12 +235,13 @@ Extra! Extra!
 
 To have a `feel` of a `complete` project, I have implemented the following extra requirements,
 1) Deploy `Google microservices demo application` via `GitOps` using `FluxCD`.
-    1) Deployment via `kind: Kustomization` & `kind: GitRepository` resource.
+    1) Deployment with `kind: Kustomization` & `kind: GitRepository` resource.
     2) Enable `cymbal-branding`, `network-policies` & `non-public-frontend` `Kustomization Components`.
-2) `Expose` Google microservices demo application via [`Gateway API`](https://gateway-api.sigs.k8s.io/) with [`Envoy Gateway`](https://gateway.envoyproxy.io/) controller implementation.
-3) Deploy [`Cert-Manager`](https://cert-manager.io/) for automatic TLS certificate requests to [`Lets' Encrypt`](https://letsencrypt.org/)
-4) Deploy [`External DNS`](https://kubernetes-sigs.github.io/external-dns/latest/) such that an `A Record` with `Subject Alternative Name (SAN) FQDN` will automatically be populated into [`AWS Route53`](https://aws.amazon.com/route53/) service.
-5) With #1, #2, #3 & #4 above, we can achieve a TLS Certificate rating of `A+` from [`Qualys SSL Labs`](https://www.ssllabs.com/ssltest/)
+2) `Expose` Google microservices demo application with [`Gateway API`](https://gateway-api.sigs.k8s.io/) and [`Envoy Gateway`](https://gateway.envoyproxy.io/) controller implementation.
+3) Redirect HTTP request to `cymbal.sctp-sandbox.com:80` to `cymbal.sctp-sandbox.com:443` using #2.
+4) Deploy [`Cert-Manager`](https://cert-manager.io/) for automatic TLS certificate requests to [`Lets' Encrypt`](https://letsencrypt.org/)
+5) Deploy [`External DNS`](https://kubernetes-sigs.github.io/external-dns/latest/) such that an `A Record` with `Subject Alternative Name (SAN) FQDN` will automatically be populated into [`AWS Route53`](https://aws.amazon.com/route53/) service.
+6) With #1, #2, #3 & #4 above, we can achieve a TLS Certificate rating of `A+` from [`Qualys SSL Labs`](https://www.ssllabs.com/ssltest/)
 
 The following table highlight the extra add-ons version that is deployed.
 
