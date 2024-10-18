@@ -371,5 +371,5 @@ As a picture is worth a `Thousands Words` please refer to the diagram below to s
 
 ### Workflow Diagram
 
-![Workflow Diagram](/assets/images/Workflow.svg)
+![Workflow Diagram](/assets/images/Workflow.png)
 
