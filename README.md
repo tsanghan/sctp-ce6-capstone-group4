@@ -62,13 +62,13 @@ For the purpose of sending Systems and Applications logs to centralized logging 
 
 The following command will be handy to get the available configuration schema for the various add-ons,
 
-```
+```bash
 aws eks describe-addon-configuration --addon-name <add-on name> --addon-version  <add-on version> | yq '.configurationSchema' | yq -P | less
 ```
 
 Add-ons version can be retrieved via the following command,
 
-```
+```bash
 aws eks describe-addon-versions --addon-name <add-on name> | less
 ```
 
@@ -136,7 +136,7 @@ Before we dive into the Query syntax for creating the Charts, let us understand 
 
 Log sample 1
 
-```
+```json
 {
     "time": "2024-10-14T13:06:03.927848496Z",
     "stream": "stdout",
@@ -168,7 +168,7 @@ Log sample 1
 ```
 Log sample 2
 
-```
+```json
 {
     "time": "2024-10-14T13:07:08.495921737Z",
     "stream": "stdout",
@@ -200,7 +200,7 @@ In both `Log sample 1` and `Log sample 2` the applications (`frontend` & `paymen
 
 To extract the `http.resp.status` value, the following `Query` [syntax](/aws-infra/modules/dashboards/json/dashboard-apps.tftpl#L10) was used.
 
-```
+```bash
 SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields @message | filter @message like /frontend/ | filter @message like /http.resp.status/ | parse @message \"status\\\":*,\" as code | stats count(*) by code
 ```
 
@@ -208,11 +208,11 @@ The values collected (`stats count(*) by code`) are then visualized as `Pie` cha
 
 For the [`Transaction processed by Currency (Application Log)`](/aws-infra/modules/dashboards/json/dashboard-apps.tftpl#L23) and [`Transaction Amount by Currency (Application Log)`](/aws-infra/modules/dashboards/json/dashboard-apps.tftpl#L36) the following `Query` syntax are used.
 
-```
+```bash
 SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields log_processed.message | filter log_processed.message like /Transaction processed/ | parse log_processed.message /Amount: (?<currency>[A-Z]{3}?)/ | stats count(*) by currency
 ```
 
-```
+```bash
 SOURCE '/aws/containerinsights/tsanghan-ce6/application' | fields log_processed.message | filter log_processed.message like /Transaction processed/ | parse log_processed.message /Amount: (?<currency>[A-Z]{3}?)(?<amount>[0-9.]{10,13}?)/ | stats sum(amount) by currency
 ```
 
@@ -220,6 +220,30 @@ Both query looks similar, both utilizing `CloudWatch regex` language syntax (`/A
 The statistics calculation also differ by one using `count(*)` and another using `sum(*)`, thus yielding 2 different bar charts.
 
 ## Part 2
+
+Extra! Extra!
+
+![Extra! Extra!](/assets/images/News-Boy-Image-GraphicsFairy-768x780.jpg)[^4]: https://thegraphicsfairy.com/terms-copyright/
+
+To have a `feel` of a `complete` project, I have implemented the following extra requirements,
+1) Deploy `Google microservices demo application` via `GitOps` using `FluxCD`.
+    1) Deployment via `kind: Kustomization` & `kind: GitRepository` resource.
+    2) Enable `cymbal-branding`, `network-policies` & `non-public-frontend` `Kustomization Components`.
+2) `Expose` Google microservices demo application via [`Gateway API`](https://gateway-api.sigs.k8s.io/) with [`Envoy Gateway`](https://gateway.envoyproxy.io/) controller implementation.
+3) Deploy [`Cert-Manager`](https://cert-manager.io/) for automatic TLS certificate requests to [`Lets' Encrypt`](https://letsencrypt.org/)
+4) Deploy [`External DNS`](https://kubernetes-sigs.github.io/external-dns/latest/) such that an `A Record` with `Subject Alternative Name (SAN) FQDN` will automatically be populated into [`AWS Route53`](https://aws.amazon.com/route53/) service.
+5) With #1, #2, #3 & #4 above, we can achieve a TLS Certificate rating of `A+` from [`Qualys SSL Labs`](https://www.ssllabs.com/ssltest/)
+
+The following table highlight the extra add-ons version that is deployed.
+
+| Add-ons | Version | Released Date | Deployment via | Deployment Tool version |
+|---------|---------|---------------|----------------|-------------------------|
+| Gateway API | v1.2.0 | 4 Oct 2024 | kubectl | v1.31.1 |
+| Cert-Manager | v1.16.1 | 9 Oct 2024 | Helm Chart | Helm-v3.15.3 Chart-v1.16.1 |
+| External-DNS | v0.15.0 | 4 Sep 2024 | Helm Chart | Helm-v3.15.3 Chart-v1.15.0 |
+| Cilium CNI   | v1.16.3 | 16 Oct 2024 | Helm Chart | Helm-v3.15.3 Chart-v1.16.3 |
+| FluxCD       | v2.4.0 | 1 Oct 2024 | flux CLI | v2.4.0 |
+
 
 For the purpose of the Capstone Project, no CI/CD is required. However, CI/CD is implemented in this Capstone Project repository.
 
@@ -240,7 +264,7 @@ Additional details not mentioned in `Part 1` of the deployment of `Amazon EKS` i
 
 * `Amazon EKS` is deployed using `t3.large` AMI Type (`AWS Nitro System`) and with add-on `VPC-CNI` using the following configuration,
 
-```
+```json
 {
   "env": {
     "ENABLE_POD_ENI": "true",
@@ -260,7 +284,7 @@ This is to overcome the limitation of available number of Pods per Nodes based o
 
 The following [`command`](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AvailableIpPerENI.html) will list `supported network interfaces and IP addresses per interface` for a specific instance type. Example below shows `t3` instance type.
 
-```
+```bash
 aws ec2 describe-instance-types \
     --filters "Name=instance-type,Values=t3.*" \
     --query "InstanceTypes[].{ \
