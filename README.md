@@ -260,7 +260,9 @@ To have a `feel` of a `complete` project, I have implemented the following extra
 3) Redirect HTTP request to `cymbal.sctp-sandbox.com:80` to `cymbal.sctp-sandbox.com:443` using #2.
 4) Deploy [`Cert-Manager`](https://cert-manager.io/) for automatic TLS certificate requests to [`Lets' Encrypt`](https://letsencrypt.org/)
 5) Deploy [`External DNS`](https://kubernetes-sigs.github.io/external-dns/latest/) such that an `A Record` with `Subject Alternative Name (SAN) FQDN` will automatically be populated into [`AWS Route53`](https://aws.amazon.com/route53/) service.
-6) With #1, #2, #3 & #4 above, we can achieve a TLS Certificate rating of `A+` from [`Qualys SSL Labs`](https://www.ssllabs.com/ssltest/)
+6) With #1, #2, #3 & #4 above, we can achieve a TLS Certificate rating of `A+` from [`Qualys SSL Labs`](https://www.ssllabs.com/ssltest/) as shown below.
+
+![Qualys SSL Labs Server Test](/assets/images/cymbal-tls-ssllab-A-plus-2.png)
 
 The following table highlight the extra add-ons version that is deployed.
 
