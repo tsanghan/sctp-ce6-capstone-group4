@@ -42,7 +42,7 @@ We will be using `AWS CloudWatch` service for centralized logging solution.
 
 `Application Monitoring Dashboard` will be created within `AWS CloudWatch` service as a requirement for the capstone projects.
 
-For application, We deploy Google microservices-demo `Online Boutique` as containerized application into `EKS` platform.
+For application, we deploy Google microservices-demo `Online Boutique` as containerized application into `EKS` platform.
 
 Google microservices-demo GitHub repository is at `https://github.com/GoogleCloudPlatform/microservices-demo`
 
@@ -277,6 +277,7 @@ The following table highlight the extra add-ons version that is deployed.
 | Add-ons | Version | Released Date | Deployment via | Deployment Tool version |
 |---------|---------|---------------|----------------|-------------------------|
 | Gateway API | v1.2.0 | 4 Oct 2024 | kubectl | v1.31.1 |
+| EnvoyGateway | v0.0.0-latest | N.A. | Helm OCI | Helm-v3.15.3 OCI |
 | Cert-Manager | v1.16.1 | 9 Oct 2024 | Helm Chart | Helm-v3.15.3 Chart-v1.16.1 |
 | External-DNS | v0.15.0 | 4 Sep 2024 | Helm Chart | Helm-v3.15.3 Chart-v1.15.0 |
 | Cilium CNI   | v1.16.3 | 16 Oct 2024 | Helm Chart | Helm-v3.15.3 Chart-v1.16.3 |
